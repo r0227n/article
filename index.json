@@ -1,5 +1,5 @@
 {
-  "total": 5,
+  "total": 6,
   "update_at": "",
   "articles": [
     {
@@ -60,6 +60,21 @@
       "published": true,
       "updated_at": "",
       "path": "articles/edit_android_support_device.md"
+    },
+    {
+      "title": "WhisperKitの使い方と評価 音声処理AIをMacとiOSで動かす",
+      "emoji": "🎤",
+      "type": "アイデア",
+      "topics": [
+        "whisper",
+        "whisperkit",
+        "ai",
+        "swift",
+        "oss"
+      ],
+      "published": true,
+      "updated_at": "",
+      "path": "articles/learn_whisper_kit.md"
     }
   ]
 }
