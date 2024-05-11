@@ -31,13 +31,44 @@ open ios/Runner.xcworkspace/
 以上で多言語化作業が完了します。
 
 # アプリ上で表示言語(Locale)の変更方法
-<!-- TODO: アプリ上での表示言語(Locale)の変更方法について解説 -->
+
 <!-- TODO: iOSはアプリごとに表示言語をカスタマイズ可能だが、Androidは変更可能じゃない。そのため、アプリ上で変更することができる機能を追加する時がある。 -->
+
+```dart
+MaterialApp(
+  localizationsDelegates: AppLocalizations.localizationsDelegates,
+  cales: const [
+    Locale('ja'),
+    Locale('en'),
+  ],
+  locale: Locale('ja'), // TODO: ここの値を更新する!
+  home: const MyHomePage(),
+);
+```
+
+<!-- TODO: URLを挿入する -->
+[MaterialApp Widget]()の[locale]()プロパティに代入する値を切り替えることにより、アプリ上の表示言語を切り替えることができます。
+
+<!-- TODO: Localeの説明 -->
 
 ## Riverpodを用いたLocale変更方法のサンプル
 
 <!-- TODO: shared_preferenceやRiverpod周りのflutter pub add -->
-<!-- TODO: shared_preference providerの定義 -->
+```dart preferences_provider.dart
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
+part 'preferences_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+SharedPreferences sharedPreferences<SharedPreferences>(SharedPreferencesRef ref) =>
+    throw UnimplementedError();
+```
+
+アプリの設定周りをshared_preferenceで記録し、参照するため`keepAlive`を`true`に設定し、状態を常に保持するようにしています。
+また、初期化処理が失敗した状態で設定周りを参照するのはエラーの原因になり得るため、インスタンスを上書きするのに失敗したら`throw`するようにしています。
+
 <!-- TODO: main.dartでインスタンスの保持方法についてExampleコード -->
 <!-- TODO: Localeを実際に変更するコードのサンプル -->
 <!-- TODO: Exampleコードのリンク -->
