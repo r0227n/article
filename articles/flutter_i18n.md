@@ -6,7 +6,9 @@ topics: ["Flutter", "i18n"]
 published: false
 ---
 
-## Info.plist(iOS&macOSのネイティブAPI処理形)の多言語化対応
+<!-- TODO: 公式ドキュメントで取り上げられていないが、Info.plistの内容やアプリ上で直接表示言語を変える方法が存在するが、まとまった記事がない -->
+
+# Info.plist(iOS&macOSのネイティブAPI処理形)の多言語化対応
 
 `Info.plist`は、デバイスの機能に対するアクセス許可やアプリの表示名などを記述する設定ファイルです。本節はデバイスの言語設定に連動し、設定ファイルから参照される値を変更する方法について説明します。
 
@@ -27,3 +29,18 @@ open ios/Runner.xcworkspace/
 3. 2で反映された内容を編集し、言語ごとの表示内容を編集する
 
 以上で多言語化作業が完了します。
+
+# アプリ上で表示言語(Locale)の変更方法
+<!-- TODO: アプリ上での表示言語(Locale)の変更方法について解説 -->
+<!-- TODO: iOSはアプリごとに表示言語をカスタマイズ可能だが、Androidは変更可能じゃない。そのため、アプリ上で変更することができる機能を追加する時がある。 -->
+
+## Riverpodを用いたLocale変更方法のサンプル
+
+<!-- TODO: shared_preferenceやRiverpod周りのflutter pub add -->
+<!-- TODO: shared_preference providerの定義 -->
+<!-- TODO: main.dartでインスタンスの保持方法についてExampleコード -->
+<!-- TODO: Localeを実際に変更するコードのサンプル -->
+<!-- TODO: Exampleコードのリンク -->
+
+# まとめ
+<!-- TODO: .arbファイルの変更方法について解説はあるが、それ以外の多言語化対応についての記事が少ないから書いたという感じの内容を書く -->
