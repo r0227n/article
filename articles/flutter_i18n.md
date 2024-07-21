@@ -5,6 +5,12 @@ type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["Flutter", "i18n"]
 published: false
 ---
+https://docs.flutter.dev/ui/accessibility-and-internationalization/internationalization
+
+```bash
+flutter pub add flutter_localizations --sdk=flutter
+flutter pub add intl:any
+```
 
 <!-- TODO: 公式ドキュメントで取り上げられていないが、Info.plistの内容やアプリ上で直接表示言語を変える方法が存在するが、まとまった記事がない -->
 
