@@ -7,6 +7,7 @@ published: true
 ---
 
 Flutter製アプリのアイコンを[flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons)でカスタマイズ時、デフォルトだとAndroidのアイコン画像だけ拡大表示され、画像全体をアイコン上に表示することができない問題があります。
+![](https://storage.googleapis.com/zenn-user-upload/8318c422b182-20240728.png)
 本記事は上記問題を解決する方法について説明していきます。
 (Flutter前提ですが、内容としてはAndroidのネイティブ側でも共通だと思います。)
 
@@ -29,6 +30,8 @@ Flutter製アプリのアイコンを[flutter_launcher_icons](https://pub.dev/pa
 
 引用元
 https://github.com/fluttercommunity/flutter_launcher_icons/issues/96#issuecomment-1325387518
+
+![](https://storage.googleapis.com/zenn-user-upload/c2eee184d440-20240728.png)
 
 ## 解説
 
