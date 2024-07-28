@@ -1,5 +1,5 @@
 {
-  "total": 6,
+  "total": 7,
   "update_at": "",
   "articles": [
     {
@@ -75,6 +75,18 @@
       "published": true,
       "updated_at": "",
       "path": "articles/learn_whisper_kit.md"
+    },
+    {
+      "title": "【Android】アイコン画像の拡大表示を防ぐ方法",
+      "emoji": "🖼️",
+      "type": "アイデア",
+      "topics": [
+        "Android",
+        "Flutter"
+      ],
+      "published": true,
+      "updated_at": "",
+      "path": "articles/flutter_android_adaptive_icon.md"
     }
   ]
 }
