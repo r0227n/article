@@ -1,16 +1,150 @@
-# article_viewer
+# Flutter Webブログ表示サイト仕様書
 
-A new Flutter project.
+## プロジェクト概要
 
-## Getting Started
+本プロジェクトは、マークダウン形式で保存されたブログ記事をWeb上で閲覧できるFlutterアプリケーションを開発するものである。記事データはファイルシステム上のマークダウンファイルとして管理され、Flutterアプリケーションがそれらを読み込み表示する。
 
-This project is a starting point for a Flutter application.
+## ディレクトリ構成
 
-A few resources to get you started if this is your first Flutter project:
+```bash
+/
+├── articles/               # マークダウン記事を格納するディレクトリ
+│   ├── 2025/              # 年別ディレクトリ
+│   │   ├── 04/           # 月別ディレクトリ
+│   │   │   ├── article1.md
+│   │   │   └── article2.md
+│   │   └── 05/
+│   └── 2024/
+└── app/
+    └── article_viewer/    # Flutterプロジェクト
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 技術要件
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 開発フレームワーク
+
+- Flutter Web
+
+### 使用パッケージ
+
+- riverpod: 状態管理
+- go_router: ルーティング
+- flutter_markdown: マークダウンレンダリング
+
+## 機能仕様
+
+### 記事管理
+
+- 記事は `articles/年/月` ディレクトリにマークダウンファイルとして保存
+- 各マークダウンファイルには以下のフロントマター情報を含める
+
+  ```markdown
+  ---
+  title: 記事タイトル
+  date: YYYY-MM-DD
+  tags: [タグ1, タグ2, タグ3]
+  ---
+  
+  記事本文...
+  ```
+
+### 画面構成
+
+#### 1. 記事一覧画面
+
+- 表示内容:
+  - 記事タイトル
+  - 投稿日 (YYYY-MM-DD形式)
+  - タグ (複数選択可能なフィルター機能)
+- 機能:
+  - 記事の一覧表示
+  - タグによるフィルタリング
+  - 日付順ソート（新しい順/古い順）
+  - 記事詳細画面への遷移（記事タイトルクリック時）
+
+#### 2. 記事詳細画面
+
+- 表示内容:
+  - 記事タイトル
+  - 投稿日
+  - タグ一覧
+  - 記事本文（マークダウンレンダリング）
+- 機能:
+  - マークダウンの適切なレンダリング（見出し、リスト、コードブロック等）
+  - 一覧画面への戻るボタン
+  - 関連記事の表示（同じタグを持つ記事）
+
+#### 3. 将来的な拡張（開発に余裕がある場合）
+
+- カレンダー表示画面
+  - 月別カレンダー形式で投稿がある日を視覚的に表示
+  - 日付クリックでその日の記事一覧を表示
+- 検索画面
+  - タイトル、タグ、本文からのキーワード検索
+  - 検索結果の一覧表示
+
+## アプリケーション設計
+
+### 状態管理（Riverpod）
+
+- ArticleRepository: 記事データの読み込みと管理
+- ArticleNotifier: 記事一覧、フィルタリング状態の管理
+- TagsNotifier: 利用可能なタグの管理
+
+### ルーティング（go_router）
+
+- `/`: 記事一覧画面
+- `/article/:year/:month/:filename`: 記事詳細画面
+- `/calendar`（拡張）: カレンダー表示画面
+- `/search`（拡張）: 検索画面
+
+### データモデル
+
+```dart
+class Article {
+  final String title;
+  final DateTime date;
+  final List<String> tags;
+  final String content;
+  final String path; // articles/年/月/ファイル名
+  
+  // コンストラクタ、ファクトリメソッド等
+}
+```
+
+## 実装方針
+
+### マークダウンファイルの読み込み
+
+1. assets として記事ディレクトリを含める（pubspec.yaml）
+2. AssetBundle を使用してマークダウンファイルを読み込む
+3. フロントマターと本文を分離してパース
+4. Article オブジェクトに変換
+
+### UI実装
+
+- レスポンシブデザイン（モバイル対応）
+- マテリアルデザイン3の適用
+- ダークモード/ライトモード対応
+
+### パフォーマンス最適化
+
+- 記事一覧のページネーション
+- 必要な記事のみ読み込む遅延ロード
+- キャッシュ機構の導入
+
+## テスト戦略
+
+- ユニットテスト: モデルとビジネスロジック
+- ウィジェットテスト: UI
+- インテグレーションテスト: 画面遷移とデータ表示
+
+## 開発ステップ
+
+1. プロジェクト設定とベース構造の実装
+2. マークダウンファイル読み込み機能の実装
+3. 記事一覧画面の実装
+4. 記事詳細画面の実装
+5. タグフィルター機能の実装
+6. UI/UXの改善
+7. （余裕があれば）カレンダー表示と検索機能の実装
