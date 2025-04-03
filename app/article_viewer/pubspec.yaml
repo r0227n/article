@@ -20,6 +20,9 @@ dependencies:
   flutter_riverpod: ^2.6.1
   riverpod_annotation: ^2.6.1
 
+  # routing
+  go_router: ^14.8.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -33,6 +36,7 @@ dev_dependencies:
 
   # generator
   riverpod_generator: ^2.6.5
+  go_router_builder: ^2.8.2
   
 
 flutter:
