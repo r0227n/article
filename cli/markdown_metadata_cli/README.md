@@ -21,7 +21,7 @@ dart bin/markdown_metadata_cli.dart --files path/to/article1.md path/to/article2
 
 | オプション | 短縮形 | 説明 |
 |----------|-------|------|
-| `--files` | `-f` | article/ ディレクトリのMarkdownファイルのパスを指定 (カンマ区切りで複数指定可) |
+| `--files` | `-f` | `articles/` ディレクトリのMarkdownファイルのパスを指定 (カンマ区切りで複数指定可) |
 | `--output` | `-o` | メタデータJSONファイルの出力先ディレクトリ |
 
 ## 出力ファイル
@@ -52,34 +52,7 @@ dart bin/markdown_metadata_cli.dart --files path/to/article1.md path/to/article2
 }
 ```
 
-### インデックスファイル (`index.json`)
-
-すべての年の概要情報を含むJSONファイルが生成されます。
-
-```json
-{
-  "lastUpdated": "2025-04-05T10:30:00Z",
-  "years": [
-    {
-      "year": 2023,
-      "count": 95,
-      "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-    },
-    {
-      "year": 2024,
-      "count": 110,
-      "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-    },
-    {
-      "year": 2025,
-      "count": 42,
-      "months": [1, 2, 3, 4]
-    }
-  ],
-}
-```
-
 ## 注意事項
 
 - 処理対象のMarkdownファイルには、YAMLフロントマターが必要です
-- ファイルパスは `article/YYYY/MM/YYYY-MM-DD_title.md` 形式である必要があります
+- ファイルパスは `articles/YYYY/MM/YYYY-MM-DD_title.md` 形式である必要があります
