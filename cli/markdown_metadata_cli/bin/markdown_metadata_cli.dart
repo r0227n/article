@@ -28,8 +28,8 @@ Future<void> main(List<String> arguments) async {
     stderr.writeln(parser.usage);
     exit(1);
   }
-  if (files.any((path) => !path.contains('article/'))) {
-    stderr.writeln('エラー: files には article/ ディレクトリのパスを指定してください');
+  if (files.any((path) => !path.contains('articles/'))) {
+    stderr.writeln('エラー: files には articles/ ディレクトリのパスを指定してください');
     exit(1);
   }
 
