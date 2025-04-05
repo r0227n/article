@@ -50,8 +50,11 @@ Future<void> generateArticle({
   // 出力ファイルのパス
   final outputPath = path.join(outputDir, fileName);
 
+  // 出力ファイルのインスタンスを作成
+  final outputFile = File(outputPath);
+
   // ファイルが既に存在する場合はエラーをスロー
-  if (await File(outputPath).exists()) {
+  if (await outputFile.exists()) {
     throw Exception('ファイルが既に存在します: $outputPath');
   }
 
@@ -89,9 +92,9 @@ Future<void> generateArticle({
     }
 
     // ファイルの書き込み
-    await File(outputPath).writeAsString(template);
+    await outputFile.writeAsString(template);
 
-    print('記事が作成されました: $outputPath');
+    print('記事が作成されました: ${path.normalize(outputPath)}');
   } catch (e) {
     print('エラー: $e');
     exit(1);
