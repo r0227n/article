@@ -67,28 +67,28 @@ Future<void> generateArticle({
 
     // タイトルを設定（指定がある場合のみ）
     if (title != null) {
-      template = template.replaceFirst('title: ""', 'title: "$title"');
+      template = template.replaceFirst('title: "{{title}}"', 'title: "$title"');
     }
 
     // 絵文字を設定（指定がある場合のみ）
     if (emoji != null) {
-      template = template.replaceFirst('emoji: "📓"', 'emoji: "$emoji"');
+      template = template.replaceFirst('emoji: "{{emoji}}"', 'emoji: "$emoji"');
     }
 
     // タイプを設定（指定がある場合のみ）
     if (type != null) {
-      template = template.replaceFirst('type: "weekly"', 'type: "$type"');
+      template = template.replaceFirst('type: "{{type}}"', 'type: "$type"');
     }
 
     // トピックを設定（指定がある場合のみ）
     if (topics != null && topics.isNotEmpty) {
       final topicsList = topics.map((t) => '"$t"').join(', ');
-      template = template.replaceFirst('topics: []', 'topics: [$topicsList]');
+      template = template.replaceFirst('topics: "{{topics}}"', 'topics: [$topicsList]');
     }
 
     // 公開状態を設定（指定がある場合のみ）
     if (published != null) {
-      template = template.replaceFirst('published: false', 'published: $published');
+      template = template.replaceFirst('published: {{published}}', 'published: $published');
     }
 
     // ファイルの書き込み
