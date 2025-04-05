@@ -1,5 +1,5 @@
 name: markdown_metadata_cli
-description: A sample command-line application.
+description: A CLI tool that extracts metadata from Markdown articles and saves them as yearly JSON files
 version: 1.0.0
 # repository: https://github.com/my_org/my_repo
 
