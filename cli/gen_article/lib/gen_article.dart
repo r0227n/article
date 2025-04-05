@@ -18,12 +18,12 @@ Future<void> generateArticle({
   required bool published,
 }) async {
   // 日付の処理
-  DateTime articleDate;
+  late final DateTime articleDate;
   try {
     articleDate = DateTime.parse(date);
   } catch (e) {
     print('エラー: 日付のフォーマットが無効です。YYYY-MM-DDの形式で指定してください。');
-    exit(1);
+    rethrow;
   }
 
   // 年、月、日の取得
@@ -33,7 +33,7 @@ Future<void> generateArticle({
   // プロジェクトのルートディレクトリを取得
   final projectRoot =
       const bool.fromEnvironment('dart.vm.product')
-          ? Directory.current
+          ? Directory.current.parent
           : Directory.current.parent.parent;
 
   if (!await projectRoot.exists()) {
@@ -66,24 +66,19 @@ Future<void> generateArticle({
   // テンプレートファイルのパス
   final templatePath = path.join(projectRoot.path, 'templates', 'article_template.md');
 
-  try {
-    // テンプレートファイルの読み込み
-    var template = await File(templatePath).readAsString();
+  // テンプレートファイルの読み込み
+  var template = await File(templatePath).readAsString();
 
-    // テンプレートの置換
-    template = template
-        .replaceFirst('{{title}}', title)
-        .replaceFirst('{{emoji}}', emoji)
-        .replaceFirst('{{type}}', type)
-        .replaceFirst('{{topics}}', topics.join(', '))
-        .replaceFirst('{{published}}', published.toString());
+  // テンプレートの置換
+  template = template
+      .replaceFirst('{{title}}', title)
+      .replaceFirst('{{emoji}}', emoji)
+      .replaceFirst('{{type}}', type)
+      .replaceFirst('{{topics}}', topics.join(', '))
+      .replaceFirst('{{published}}', published.toString());
 
-    // ファイルの書き込み
-    await outputFile.writeAsString(template);
+  // ファイルの書き込み
+  await outputFile.writeAsString(template);
 
-    print('記事が作成されました: ${path.normalize(outputPath)}');
-  } catch (e) {
-    print('エラー: $e');
-    exit(1);
-  }
+  print('記事が作成されました: ${path.normalize(outputPath)}');
 }
