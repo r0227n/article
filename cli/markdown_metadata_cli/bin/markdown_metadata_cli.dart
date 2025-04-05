@@ -28,6 +28,10 @@ Future<void> main(List<String> arguments) async {
     stderr.writeln(parser.usage);
     exit(1);
   }
+  if (files.any((path) => !path.contains('article/'))) {
+    stderr.writeln('エラー: files には article/ ディレクトリのパスを指定してください');
+    exit(1);
+  }
 
   await markdown_metadata_cli.processMarkdownFiles(files, outputDir);
 }
