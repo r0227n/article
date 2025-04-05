@@ -5,6 +5,9 @@
 ```bash
 # gen_article
 dart compile exe ../cli/gen_article/bin/gen_article.dart -o gen_article
+
+# markdown_metadata_cli
+dart compile exe ../cli/markdown_metadata_cli/bin/markdown_metadata_cli.dart -o markdown_metadata_cli
 ```
 
 ## gen_articleについて
@@ -44,3 +47,26 @@ gen_articleは記事作成を支援するCLIツールです。テンプレート
 | `--help` | `-h` | ヘルプを表示 | - |
 
 記事は `articles/YYYY/MM/YYYY-MM-DD.md` の形式で保存されます。
+
+## markdown_metadata_cliについて
+
+markdown_metadata_cliは記事のメタデータを抽出し、年別のJSONファイルとして保存するCLIツールです。
+
+### 機能
+
+- 記事のメタデータを抽出
+- 年別のJSONファイルを生成
+
+### 詳細オプション
+
+```bash
+# 完全なオプション指定の例
+./markdown_metadata_cli \
+  --files ../articles/YYYY/MM/YYYY-MM-DD_title.md \
+  --output assets/metadata
+```
+
+| オプション | 短縮形 | 説明 | デフォルト値 |
+|----------|-------|------|------------|
+| `--files` | `-f` | article/ ディレクトリのMarkdownファイルのパスを指定 (カンマ区切りで複数指定可) | - |
+| `--output` | `-o` | メタデータJSONファイルの出力先ディレクトリ | - |
