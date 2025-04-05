@@ -50,7 +50,7 @@ Future<void> generateArticle({
   }
 
   // ファイル名の作成
-  final fileName = '$year-$month-$day.md';
+  final fileName = '$year-$month-${day}_$title.md';
 
   // 出力ファイルのパス
   final outputPath = path.join(outputDir, fileName);
