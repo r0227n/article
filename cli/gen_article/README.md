@@ -47,7 +47,7 @@ dart run bin/gen_article.dart \
 
 ### テンプレート
 
-記事は `cli/templates/article_template.md` テンプレートを使用して作成されます。テンプレートには以下の項目があります：
+記事は `templates/article_template.md` テンプレートを使用して作成されます。テンプレートには以下の項目があります：
 
 - title: 記事のタイトル
 - emoji: 記事に表示される絵文字
