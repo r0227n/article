@@ -41,16 +41,3 @@ Map<String, dynamic> _$YearSummaryDtoToJson(_YearSummaryDto instance) =>
       'count': instance.count,
       'months': instance.months,
     };
-
-_IndexDto _$IndexDtoFromJson(Map<String, dynamic> json) => _IndexDto(
-  lastUpdated: DateTime.parse(json['lastUpdated'] as String),
-  years:
-      (json['years'] as List<dynamic>)
-          .map((e) => YearSummaryDto.fromJson(e as Map<String, dynamic>))
-          .toList(),
-);
-
-Map<String, dynamic> _$IndexDtoToJson(_IndexDto instance) => <String, dynamic>{
-  'lastUpdated': instance.lastUpdated.toIso8601String(),
-  'years': instance.years,
-};

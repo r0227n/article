@@ -24,11 +24,3 @@ sealed class YearSummaryDto with _$YearSummaryDto {
 
   factory YearSummaryDto.fromJson(Map<String, dynamic> json) => _$YearSummaryDtoFromJson(json);
 }
-
-@freezed
-sealed class IndexDto with _$IndexDto {
-  const factory IndexDto({required DateTime lastUpdated, required List<YearSummaryDto> years}) =
-      _IndexDto;
-
-  factory IndexDto.fromJson(Map<String, dynamic> json) => _$IndexDtoFromJson(json);
-}
