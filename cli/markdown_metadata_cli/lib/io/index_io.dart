@@ -1,3 +1,4 @@
+import 'dart:convert';
 import '../models/article_metadata.dart';
 
 abstract class IndexIo {
@@ -9,4 +10,10 @@ abstract class IndexIo {
 
   /// ファイル保存
   Future<void> save({required List<ArticleMetadata> metadatas, required String path});
+}
+
+mixin IndexIoMixin on IndexIo {
+  String formatJson(Map<String, dynamic> json) {
+    return const JsonEncoder.withIndent('  ').convert(json);
+  }
 }

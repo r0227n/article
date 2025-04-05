@@ -5,7 +5,7 @@ import '../models/article_dto.dart';
 import '../models/article_metadata.dart';
 import '../io/index_io.dart';
 
-class Index extends IndexIo {
+class Index extends IndexIo with IndexIoMixin {
   @override
   Future<void> create({required List<ArticleMetadata> metadatas, required String path}) async {
     final file = File(path);
@@ -30,7 +30,7 @@ class Index extends IndexIo {
 
     final index = IndexDto(lastUpdated: DateTime.now().toUtc(), years: years);
 
-    await file.writeAsString(jsonEncode(index.toJson()), flush: true);
+    await file.writeAsString(formatJson(index.toJson()), flush: true);
     stdout.writeln('index.json を生成しました');
   }
 
@@ -88,7 +88,7 @@ class Index extends IndexIo {
 
     final updatedIndex = IndexDto(lastUpdated: DateTime.now().toUtc(), years: updatedYears);
 
-    await file.writeAsString(jsonEncode(updatedIndex.toJson()), flush: true);
+    await file.writeAsString(formatJson(updatedIndex.toJson()), flush: true);
     stdout.writeln('index.json を更新しました');
   }
 
