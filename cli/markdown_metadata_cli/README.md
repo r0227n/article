@@ -5,7 +5,7 @@ Markdown記事のメタデータを抽出し、年別のJSONファイルとし�
 ## 主な機能
 
 - Markdown記事からフロントマターを抽出
-- ファイルパスから年月日情報を抽出（`article/YYYY/MM/YYYY-MM-DD_title.md`形式に対応）
+- ファイルパスから年月日情報を抽出（`articles/YYYY/MM/YYYY-MM-DD_title.md`形式に対応）
 - 年別のJSONファイルを生成
 - インデックスファイルの生成
 
