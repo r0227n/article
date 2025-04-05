@@ -10,7 +10,7 @@ Future<void> main(List<String> arguments) async {
         ..addOption('files', abbr: 'f', help: 'Markdown files to process (comma-separated)')
         ..addOption('output', abbr: 'o', help: 'Output directory for metadata files');
 
-  ArgResults args;
+  late final ArgResults args;
   try {
     args = parser.parse(arguments);
   } catch (e) {
@@ -18,9 +18,10 @@ Future<void> main(List<String> arguments) async {
     exit(1);
   }
 
-  final String filesArg = args['files'] as String? ?? '';
+  final String filesArg = args['files'] as String? ?? (throw ArgumentError('--files オプションは必須です'));
   final List<String> files = filesArg.split(',').where((path) => path.isNotEmpty).toList();
-  final String outputDir = args['output'] as String? ?? 'assets/metadata';
+  final String outputDir =
+      args['output'] as String? ?? (throw ArgumentError('--output オプションは必須です'));
 
   if (files.isEmpty) {
     stderr.writeln('エラー: 少なくとも1つのファイルパスが必要です');
@@ -28,10 +29,5 @@ Future<void> main(List<String> arguments) async {
     exit(1);
   }
 
-  try {
-    await markdown_metadata_cli.processMarkdownFiles(files, outputDir);
-  } catch (e) {
-    stderr.writeln('エラー: $e');
-    exit(1);
-  }
+  await markdown_metadata_cli.processMarkdownFiles(files, outputDir);
 }
