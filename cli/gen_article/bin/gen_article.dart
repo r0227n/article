@@ -31,8 +31,8 @@ void main(List<String> arguments) async {
     exit(0);
   }
 
-  final title = results['title'];
-  final date = results['date'];
+  final title = results['title'] ?? '新しい記事';
+  final date = results['date'] ?? DateTime.now().toString().split(' ')[0];
   final emoji =
       results['emoji'] != null && (results['emoji'] as String).isNotEmpty
           ? results['emoji']
@@ -41,7 +41,7 @@ void main(List<String> arguments) async {
   final topics =
       results['topics'] != null && (results['topics'] as String).isNotEmpty
           ? (results['topics'] as String).split(',').map((e) => e.trim()).toList()
-          : null;
+          : const <String>[];
   final published = results['published'] as bool;
 
   await gen_article.generateArticle(
