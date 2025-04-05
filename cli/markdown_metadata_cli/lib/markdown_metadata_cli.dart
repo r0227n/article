@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'package:path/path.dart' as path;
-import 'io/index.dart';
 import 'io/year_index.dart';
 import 'models/article_metadata.dart';
 
@@ -33,13 +31,8 @@ Future<void> processMarkdownFiles(List<String> filePaths, String outputDir) asyn
     }),
   );
 
-  final index = Index();
   final yearIndex = YearIndex();
-
-  await Future.wait([
-    index.save(metadatas: metadatas, path: path.join(outputDir, 'index.json')),
-    yearIndex.save(metadatas: metadatas, path: outputDir),
-  ]);
+  await yearIndex.save(metadatas: metadatas, path: outputDir);
 
   stdout.writeln('完了! メタデータが $outputDir に生成されました');
 }
