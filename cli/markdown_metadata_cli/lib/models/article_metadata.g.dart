@@ -17,7 +17,7 @@ _ArticleMetadata _$ArticleMetadataFromJson(Map<String, dynamic> json) =>
       type: json['type'] as String,
       topics:
           (json['topics'] as List<dynamic>).map((e) => e as String).toList(),
-      published: json['published'] as bool,
+      published: json['published'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$ArticleMetadataToJson(_ArticleMetadata instance) =>
@@ -30,5 +30,4 @@ Map<String, dynamic> _$ArticleMetadataToJson(_ArticleMetadata instance) =>
       'emoji': instance.emoji,
       'type': instance.type,
       'topics': instance.topics,
-      'published': instance.published,
     };

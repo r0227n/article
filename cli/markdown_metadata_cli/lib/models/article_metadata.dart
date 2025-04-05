@@ -55,7 +55,7 @@ sealed class ArticleMetadata with _$ArticleMetadata {
     required String emoji,
     required String type,
     required List<String> topics,
-    required bool published,
+    @JsonKey(includeToJson: false, defaultValue: true) required bool published,
   }) = _ArticleMetadata;
 
   factory ArticleMetadata.fromJson(Map<String, dynamic> json) => _$ArticleMetadataFromJson(json);

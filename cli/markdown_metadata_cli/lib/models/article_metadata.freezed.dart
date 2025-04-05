@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ArticleMetadata {
 
- String get filePath; int get year; int get month; int get day; String get title; String get emoji; String get type; List<String> get topics; bool get published;
+ String get filePath; int get year; int get month; int get day; String get title; String get emoji; String get type; List<String> get topics;@JsonKey(includeToJson: false, defaultValue: true) bool get published;
 /// Create a copy of ArticleMetadata
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $ArticleMetadataCopyWith<$Res>  {
   factory $ArticleMetadataCopyWith(ArticleMetadata value, $Res Function(ArticleMetadata) _then) = _$ArticleMetadataCopyWithImpl;
 @useResult
 $Res call({
- String filePath, int year, int month, int day, String title, String emoji, String type, List<String> topics, bool published
+ String filePath, int year, int month, int day, String title, String emoji, String type, List<String> topics,@JsonKey(includeToJson: false, defaultValue: true) bool published
 });
 
 
@@ -88,7 +88,7 @@ as bool,
 @JsonSerializable()
 
 class _ArticleMetadata implements ArticleMetadata {
-  const _ArticleMetadata({required this.filePath, required this.year, required this.month, required this.day, required this.title, required this.emoji, required this.type, required final  List<String> topics, required this.published}): _topics = topics;
+  const _ArticleMetadata({required this.filePath, required this.year, required this.month, required this.day, required this.title, required this.emoji, required this.type, required final  List<String> topics, @JsonKey(includeToJson: false, defaultValue: true) required this.published}): _topics = topics;
   factory _ArticleMetadata.fromJson(Map<String, dynamic> json) => _$ArticleMetadataFromJson(json);
 
 @override final  String filePath;
@@ -105,7 +105,7 @@ class _ArticleMetadata implements ArticleMetadata {
   return EqualUnmodifiableListView(_topics);
 }
 
-@override final  bool published;
+@override@JsonKey(includeToJson: false, defaultValue: true) final  bool published;
 
 /// Create a copy of ArticleMetadata
 /// with the given fields replaced by the non-null parameter values.
@@ -140,7 +140,7 @@ abstract mixin class _$ArticleMetadataCopyWith<$Res> implements $ArticleMetadata
   factory _$ArticleMetadataCopyWith(_ArticleMetadata value, $Res Function(_ArticleMetadata) _then) = __$ArticleMetadataCopyWithImpl;
 @override @useResult
 $Res call({
- String filePath, int year, int month, int day, String title, String emoji, String type, List<String> topics, bool published
+ String filePath, int year, int month, int day, String title, String emoji, String type, List<String> topics,@JsonKey(includeToJson: false, defaultValue: true) bool published
 });
 
 
