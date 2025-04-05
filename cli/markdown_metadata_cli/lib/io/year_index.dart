@@ -74,8 +74,26 @@ class YearIndex extends IndexIo with IndexIoMixin {
       jsonDecode(await file.readAsString()) as Map<String, dynamic>,
     );
 
-    final updateArticles = metadatas.where((e) => !yearArticle.articles.contains(e)).toList();
-    final allArticles = [...yearArticle.articles, ...updateArticles];
+    // 既存の記事から、更新対象外の記事を抽出する
+    final articlesToKeep =
+        yearArticle.articles.where((existingArticle) {
+          // 新しいメタデータと完全に一致する記事は更新対象とする
+          if (metadatas.any((newArticle) => existingArticle == newArticle)) {
+            return false;
+          }
+
+          // 同じファイルパスを持つ新しい記事を探す
+          // 見つからない場合は既存の記事をそのまま保持
+          final matchingNewArticle = metadatas.firstWhere(
+            (newArticle) => existingArticle.filePath == newArticle.filePath,
+            orElse: () => existingArticle,
+          );
+
+          // 新しい記事と既存の記事が同じ場合は除外、異なる場合は更新対象とする
+          return matchingNewArticle == existingArticle;
+        }).toList();
+
+    final allArticles = [...articlesToKeep, ...metadatas];
 
     final updatedDto = YearlyArticleDto(
       year: year,
