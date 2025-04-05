@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:path/path.dart' as p;
 import '../models/article_metadata.dart';
 import '../io/index_io.dart';
-import '../models/article_dto.dart';
+import '../models/year_article_dto.dart';
 
 class YearIndex extends IndexIo with IndexIoMixin {
   @override
