@@ -43,7 +43,7 @@ dart run bin/gen_article.dart \
 
 ### 出力先
 
-記事は `articles/YYYY/MM/YYYY-MM-DD.md` の形式で保存されます。
+記事は `articles/YYYY/MM/YYYY-MM-DD_title.md` の形式で保存されます。
 
 ### テンプレート
 
