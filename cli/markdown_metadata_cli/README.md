@@ -9,20 +9,6 @@ Markdown記事のメタデータを抽出し、年別のJSONファイルとし�
 - 年別のJSONファイルを生成
 - インデックスファイルの生成
 
-## インストール
-
-```bash
-# リポジトリをクローン
-git clone https://your-repo-url/markdown_metadata_cli.git
-cd markdown_metadata_cli
-
-# 依存関係のインストール
-dart pub get
-
-# ビルド (オプション)
-dart compile exe bin/markdown_metadata_cli.dart -o markdown_metadata
-```
-
 ## 使い方
 
 ### 基本的な使用方法
@@ -31,16 +17,12 @@ dart compile exe bin/markdown_metadata_cli.dart -o markdown_metadata
 dart bin/markdown_metadata_cli.dart --files path/to/article1.md path/to/article2.md --output assets/metadata
 ```
 
-### ワイルドカードでの指定 (Bashなど)
-
-```bash
-dart bin/markdown_metadata_cli.dart --files articles/**/*.md --output assets/metadata
-```
-
 ### オプション
 
-- `--files`, `-f`: 処理するMarkdownファイルのパス (複数指定可)
-- `--output`, `-o`: メタデータJSONファイルの出力先ディレクトリ (デフォルト: assets/metadata)
+| オプション | 短縮形 | 説明 |
+|----------|-------|------|
+| `--files` | `-f` | article/ ディレクトリのMarkdownファイルのパスを指定 (カンマ区切りで複数指定可) |
+| `--output` | `-o` | メタデータJSONファイルの出力先ディレクトリ |
 
 ## 出力ファイル
 

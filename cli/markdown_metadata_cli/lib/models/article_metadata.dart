@@ -2,7 +2,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:yaml/yaml.dart';
 
 part 'article_metadata.freezed.dart';
@@ -67,7 +66,7 @@ sealed class ArticleMetadata with _$ArticleMetadata {
     final date = file.parseDatePrefix();
 
     return ArticleMetadata(
-      filePath: file.path,
+      filePath: filePath.split('article/').last,
       year: date.year,
       month: date.month,
       day: date.day,
