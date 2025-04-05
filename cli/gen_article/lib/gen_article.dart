@@ -5,7 +5,18 @@ import 'package:path/path.dart' as path;
 ///
 /// [title] 記事のタイトル（オプション）
 /// [date] 記事の日付（オプション、フォーマット: YYYY-MM-DD）
-Future<void> generateArticle({String? title, String? date}) async {
+/// [emoji] 記事の絵文字（オプション）
+/// [type] 記事のタイプ（オプション、monthly/weekly/daily）
+/// [topics] 記事のトピック（オプション、複数指定可）
+/// [published] 公開状態（オプション、デフォルトはfalse）
+Future<void> generateArticle({
+  String? title,
+  String? date,
+  String? emoji,
+  String? type,
+  List<String>? topics,
+  bool? published,
+}) async {
   // 日付の処理
   DateTime articleDate;
   if (date != null) {
@@ -49,13 +60,36 @@ Future<void> generateArticle({String? title, String? date}) async {
 
   try {
     // テンプレートファイルの読み込み
-    final template = await File(templatePath).readAsString();
+    var template = await File(templatePath).readAsString();
 
-    // タイトルを設定
-    final content = template.replaceFirst('title: ""', 'title: "${title ?? ""}"');
+    // タイトルを設定（指定がある場合のみ）
+    if (title != null) {
+      template = template.replaceFirst('title: ""', 'title: "$title"');
+    }
+
+    // 絵文字を設定（指定がある場合のみ）
+    if (emoji != null) {
+      template = template.replaceFirst('emoji: "📓"', 'emoji: "$emoji"');
+    }
+
+    // タイプを設定（指定がある場合のみ）
+    if (type != null) {
+      template = template.replaceFirst('type: "weekly"', 'type: "$type"');
+    }
+
+    // トピックを設定（指定がある場合のみ）
+    if (topics != null && topics.isNotEmpty) {
+      final topicsList = topics.map((t) => '"$t"').join(', ');
+      template = template.replaceFirst('topics: []', 'topics: [$topicsList]');
+    }
+
+    // 公開状態を設定（指定がある場合のみ）
+    if (published != null) {
+      template = template.replaceFirst('published: false', 'published: $published');
+    }
 
     // ファイルの書き込み
-    await File(outputPath).writeAsString(content);
+    await File(outputPath).writeAsString(template);
 
     print('記事が作成されました: $outputPath');
   } catch (e) {
