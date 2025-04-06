@@ -19,7 +19,7 @@ class _ArticleContentViewState extends ConsumerState<ArticleContentView> {
   void initState() {
     super.initState();
     final articleService = ref.read(articleServiceProvider);
-    _contentFuture = articleService.getContentByPath(widget.path);
+    _contentFuture = articleService.getContentByPath('articles/${widget.path}');
   }
 
   @override

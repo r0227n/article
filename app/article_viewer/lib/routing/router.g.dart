@@ -14,7 +14,7 @@ RouteBase get $articleListRoute => GoRouteData.$route(
   factory: $ArticleListRouteExtension._fromState,
   routes: [
     GoRouteData.$route(
-      path: ':year/:month/:title',
+      path: ':year/:month/:fileName',
 
       factory: $ArticleContentRouteExtension._fromState,
     ),
@@ -42,11 +42,11 @@ extension $ArticleContentRouteExtension on ArticleContentRoute {
       ArticleContentRoute(
         year: int.parse(state.pathParameters['year']!)!,
         month: int.parse(state.pathParameters['month']!)!,
-        title: state.pathParameters['title']!,
+        fileName: state.pathParameters['fileName']!,
       );
 
   String get location => GoRouteData.$location(
-    '/articles/${Uri.encodeComponent(year.toString())}/${Uri.encodeComponent(month.toString())}/${Uri.encodeComponent(title)}',
+    '/articles/${Uri.encodeComponent(year.toString())}/${Uri.encodeComponent(month.toString())}/${Uri.encodeComponent(fileName)}',
   );
 
   void go(BuildContext context) => context.go(location);

@@ -234,8 +234,8 @@ as List<String>,
 /// @nodoc
 @JsonSerializable()
 
-class _Article implements Article {
-  const _Article({required this.filePath, required this.year, required this.month, required this.day, required this.title, required this.emoji, required this.type, required final  List<String> topics}): _topics = topics;
+class _Article extends Article {
+  const _Article({required this.filePath, required this.year, required this.month, required this.day, required this.title, required this.emoji, required this.type, required final  List<String> topics}): _topics = topics,super._();
   factory _Article.fromJson(Map<String, dynamic> json) => _$ArticleFromJson(json);
 
 @override final  String filePath;

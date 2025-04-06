@@ -17,6 +17,8 @@ sealed class ArticleMeta with _$ArticleMeta {
 
 @freezed
 sealed class Article with _$Article {
+  const Article._();
+
   const factory Article({
     required String filePath,
     required int year,
@@ -29,4 +31,6 @@ sealed class Article with _$Article {
   }) = _Article;
 
   factory Article.fromJson(Map<String, dynamic> json) => _$ArticleFromJson(json);
+
+  String get fileName => filePath.split('/').last;
 }

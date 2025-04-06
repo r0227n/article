@@ -18,10 +18,16 @@ class ArticleListView extends ConsumerWidget {
         AsyncData(:final List<Article> value) => ListView.builder(
           itemCount: value.length,
           itemBuilder: (context, index) {
+            final data = value[index];
+
             return ListTile(
-              title: Text(value[index].title),
+              title: Text(data.title),
               onTap: () {
-                ArticleContentRoute(path: value[index].filePath).push(context);
+                ArticleContentRoute(
+                  year: data.year,
+                  month: data.month,
+                  fileName: data.fileName,
+                ).go(context);
               },
             );
           },

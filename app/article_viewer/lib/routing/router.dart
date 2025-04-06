@@ -27,7 +27,7 @@ GoRouter router(Ref ref) {
 @TypedGoRoute<ArticleListRoute>(
   path: '/articles',
   routes: <TypedGoRoute<GoRouteData>>[
-    TypedGoRoute<ArticleContentRoute>(path: ':year/:month/:title'),
+    TypedGoRoute<ArticleContentRoute>(path: ':year/:month/:fileName'),
   ],
 )
 class ArticleListRoute extends GoRouteData {
@@ -40,15 +40,15 @@ class ArticleListRoute extends GoRouteData {
 }
 
 class ArticleContentRoute extends GoRouteData {
-  const ArticleContentRoute({required this.year, required this.month, required this.title});
+  const ArticleContentRoute({required this.year, required this.month, required this.fileName});
 
   final int year;
   final int month;
-  final String title;
+  final String fileName;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final path = '$year/${month.toString().padLeft(2, '0')}/$title';
+    final path = '$year/${month.toString().padLeft(2, '0')}/$fileName';
     return ArticleContentView(path: path);
   }
 }
