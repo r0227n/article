@@ -5,6 +5,7 @@ import 'article_list_tile.dart';
 import '../view_model/article_list_view_model.dart';
 import '../../../routing/router.dart';
 import '../../../domain/models/article.dart';
+import '../../core/ui/error_screen.dart';
 
 class ArticleListScreen extends ConsumerStatefulWidget {
   const ArticleListScreen({super.key, this.year, this.month});
@@ -58,7 +59,10 @@ class _ArticleListScreenState extends ConsumerState<ArticleListScreen> {
             case (ConnectionState.done, List<Article> articles) when articles.isEmpty:
               return ArticleEmpty(year: widget.year, month: widget.month);
             default:
-              return const Center(child: Text('エラーが発生しました'));
+              return ErrorScreen(
+                error: snapshot.error ?? '不明なエラー',
+                stackTrace: snapshot.stackTrace,
+              );
           }
         },
       ),
