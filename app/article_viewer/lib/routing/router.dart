@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'ext_route.dart';
 import '../ui/article/widgets/article_content_screen.dart';
 import '../ui/article/widgets/article_list_screen.dart';
 import '../ui/core/ui/not_found_screen.dart';
@@ -19,7 +20,12 @@ GoRouter router(Ref ref) {
     redirect: (context, state) {
       // NOTE: ルートディレクトリを決めていないため、一旦/articlesにリダイレクト
       if (state.uri.path == '/') {
-        return '/articles';
+        return ArticlesRoute().location;
+      }
+
+      // pathに全角数字が含まれている場合、半角数字に変換
+      if (state.uri.containsFullWidthDigits()) {
+        return '/${state.uri.pathSegmentsFullWidthToHalfWidth().join('/')}';
       }
 
       return null;
@@ -62,6 +68,12 @@ class ArticlesYearRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ArticleListScreen(year: year);
+  }
+
+  @override
+  String? redirect(BuildContext context, GoRouterState state) {
+    final path = ArticlesRoute().location;
+    return '$path/$year';
   }
 }
 
