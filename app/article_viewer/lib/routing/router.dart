@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../ui/article/widgets/article_content_view.dart';
-import '../ui/article/widgets/article_list_view.dart';
+import '../ui/article/widgets/article_content_screen.dart';
+import '../ui/article/widgets/article_list_screen.dart';
 
 part 'router.g.dart';
 
@@ -44,7 +44,7 @@ class ArticlesRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const ArticleListView();
+    return const ArticleListScreen();
   }
 }
 
@@ -55,7 +55,7 @@ class ArticlesYearRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ArticleListView(year: year);
+    return ArticleListScreen(year: year);
   }
 }
 
@@ -67,7 +67,7 @@ class ArticlesMonthRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ArticleListView(year: year, month: month);
+    return ArticleListScreen(year: year, month: month);
   }
 }
 
@@ -82,6 +82,6 @@ class MarkdownRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     final path = '$year/${month.toString().padLeft(2, '0')}/$fileName';
 
-    return ArticleContentView(path: path);
+    return ArticleContentScreen(path: path);
   }
 }

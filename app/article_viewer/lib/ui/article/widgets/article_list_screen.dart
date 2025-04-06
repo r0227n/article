@@ -5,17 +5,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../routing/router.dart';
 
-class ArticleListView extends ConsumerStatefulWidget {
-  const ArticleListView({super.key, this.year, this.month});
+class ArticleListScreen extends ConsumerStatefulWidget {
+  const ArticleListScreen({super.key, this.year, this.month});
 
   final int? year;
   final int? month;
 
   @override
-  ConsumerState<ArticleListView> createState() => _ArticleListViewState();
+  ConsumerState<ArticleListScreen> createState() => _ArticleListScreenState();
 }
 
-class _ArticleListViewState extends ConsumerState<ArticleListView> {
+class _ArticleListScreenState extends ConsumerState<ArticleListScreen> {
   late final Future<List<Article>> futureArticles;
 
   @override

@@ -3,16 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:article_viewer/data/services/article_service.dart';
 
-class ArticleContentView extends ConsumerStatefulWidget {
-  const ArticleContentView({super.key, required this.path});
+class ArticleContentScreen extends ConsumerStatefulWidget {
+  const ArticleContentScreen({super.key, required this.path});
 
   final String path;
 
   @override
-  ConsumerState<ArticleContentView> createState() => _ArticleContentViewState();
+  ConsumerState<ArticleContentScreen> createState() => _ArticleContentScreenState();
 }
 
-class _ArticleContentViewState extends ConsumerState<ArticleContentView> {
+class _ArticleContentScreenState extends ConsumerState<ArticleContentScreen> {
   late final Future<String> _contentFuture;
 
   @override
