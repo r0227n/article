@@ -1,10 +1,11 @@
-import 'package:article_viewer/ui/article/widgets/article_content_view.dart';
-import 'package:article_viewer/ui/article/widgets/article_list_view.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../ui/article/widgets/article_content_view.dart';
+import '../ui/article/widgets/article_list_view.dart';
 
 part 'router.g.dart';
 
@@ -24,14 +25,22 @@ GoRouter router(Ref ref) {
   );
 }
 
-@TypedGoRoute<ArticleListRoute>(
+@TypedGoRoute<ArticlesRoute>(
   path: '/articles',
   routes: <TypedGoRoute<GoRouteData>>[
-    TypedGoRoute<ArticleContentRoute>(path: ':year/:month/:fileName'),
+    TypedGoRoute<ArticlesYearRoute>(
+      path: ':year',
+      routes: [
+        TypedGoRoute<ArticlesMonthRoute>(
+          path: ':month',
+          routes: [TypedGoRoute<MarkdownRoute>(path: ':fileName')],
+        ),
+      ],
+    ),
   ],
 )
-class ArticleListRoute extends GoRouteData {
-  const ArticleListRoute();
+class ArticlesRoute extends GoRouteData {
+  const ArticlesRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -39,8 +48,31 @@ class ArticleListRoute extends GoRouteData {
   }
 }
 
-class ArticleContentRoute extends GoRouteData {
-  const ArticleContentRoute({required this.year, required this.month, required this.fileName});
+class ArticlesYearRoute extends GoRouteData {
+  const ArticlesYearRoute({required this.year});
+
+  final int year;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ArticleListView(year: year);
+  }
+}
+
+class ArticlesMonthRoute extends GoRouteData {
+  const ArticlesMonthRoute({required this.year, required this.month});
+
+  final int year;
+  final int month;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ArticleListView(year: year, month: month);
+  }
+}
+
+class MarkdownRoute extends GoRouteData {
+  const MarkdownRoute({required this.year, required this.month, required this.fileName});
 
   final int year;
   final int month;
@@ -49,6 +81,7 @@ class ArticleContentRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     final path = '$year/${month.toString().padLeft(2, '0')}/$fileName';
+
     return ArticleContentView(path: path);
   }
 }

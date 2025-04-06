@@ -1,9 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:article_viewer/domain/models/article.dart';
-import 'package:article_viewer/data/repositories/article/article_meta_repository.dart';
-import 'package:article_viewer/data/repositories/article/article_content_repository.dart';
+import '../repositories/article/article_meta_repository.dart';
+import '../repositories/article/article_content_repository.dart';
+import '../../../domain/models/article.dart';
 
 part 'article_service.g.dart';
 
@@ -22,6 +22,10 @@ class ArticleService {
   final ArticleMetaRepository metaRepository;
   final ArticleContentRepository contentRepository;
   final String assetsMetapath;
+
+  Future<List<ArticleMeta>> getArticleMetaAll() async {
+    return metaRepository.getAll(path: assetsMetapath);
+  }
 
   Future<List<Article>> getArticleAll() async {
     final meta = await metaRepository.getAll(path: assetsMetapath);

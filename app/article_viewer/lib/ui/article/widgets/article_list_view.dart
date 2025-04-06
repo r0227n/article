@@ -5,36 +5,64 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../routing/router.dart';
 
-class ArticleListView extends ConsumerWidget {
-  const ArticleListView({super.key});
+class ArticleListView extends ConsumerStatefulWidget {
+  const ArticleListView({super.key, this.year, this.month});
+
+  final int? year;
+  final int? month;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final articles = ref.watch(articleListViewModelProvider);
+  ConsumerState<ArticleListView> createState() => _ArticleListViewState();
+}
 
+class _ArticleListViewState extends ConsumerState<ArticleListView> {
+  late final Future<List<Article>> futureArticles;
+
+  @override
+  void initState() {
+    super.initState();
+    futureArticles = ref
+        .read(articleListViewModelProvider.notifier)
+        .getArticles(year: widget.year, month: widget.month);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: switch (articles) {
-        AsyncData(:final List<Article> value) => ListView.builder(
-          itemCount: value.length,
-          itemBuilder: (context, index) {
-            final data = value[index];
+      body: FutureBuilder<List<Article>>(
+        future: futureArticles,
+        builder: (context, snapshot) {
+          switch ((snapshot.connectionState, snapshot.data)) {
+            case (ConnectionState.waiting, _):
+              return const Center(child: CircularProgressIndicator());
+            case (ConnectionState.done, List<Article> articles) when articles.isNotEmpty:
+              return ListView.builder(
+                itemCount: articles.length,
+                itemBuilder: (context, index) {
+                  final article = articles[index];
 
-            return ListTile(
-              title: Text(data.title),
-              onTap: () {
-                ArticleContentRoute(
-                  year: data.year,
-                  month: data.month,
-                  fileName: data.fileName,
-                ).go(context);
-              },
-            );
-          },
-        ),
-        AsyncError(:final error, :final stackTrace) => Text(stackTrace.toString()),
-        _ => const Center(child: CircularProgressIndicator()),
-      },
+                  return ListTile(
+                    title: Text(article.title),
+                    onTap: () {
+                      MarkdownRoute(
+                        year: article.year,
+                        month: article.month,
+                        fileName: article.fileName,
+                      ).go(context);
+                    },
+                  );
+                },
+              );
+            case (ConnectionState.done, List<Article> articles) when articles.isEmpty:
+              return const Center(child: Text('データがありません'));
+            case (ConnectionState.done, null):
+              return const Center(child: Text('エラーが発生しました'));
+            default:
+              return const SizedBox.shrink();
+          }
+        },
+      ),
     );
   }
 }

@@ -6,24 +6,37 @@ part of 'router.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$articleListRoute];
+List<RouteBase> get $appRoutes => [$articlesRoute];
 
-RouteBase get $articleListRoute => GoRouteData.$route(
+RouteBase get $articlesRoute => GoRouteData.$route(
   path: '/articles',
 
-  factory: $ArticleListRouteExtension._fromState,
+  factory: $ArticlesRouteExtension._fromState,
   routes: [
     GoRouteData.$route(
-      path: ':year/:month/:fileName',
+      path: ':year',
 
-      factory: $ArticleContentRouteExtension._fromState,
+      factory: $ArticlesYearRouteExtension._fromState,
+      routes: [
+        GoRouteData.$route(
+          path: ':month',
+
+          factory: $ArticlesMonthRouteExtension._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: ':fileName',
+
+              factory: $MarkdownRouteExtension._fromState,
+            ),
+          ],
+        ),
+      ],
     ),
   ],
 );
 
-extension $ArticleListRouteExtension on ArticleListRoute {
-  static ArticleListRoute _fromState(GoRouterState state) =>
-      const ArticleListRoute();
+extension $ArticlesRouteExtension on ArticlesRoute {
+  static ArticlesRoute _fromState(GoRouterState state) => const ArticlesRoute();
 
   String get location => GoRouteData.$location('/articles');
 
@@ -37,13 +50,51 @@ extension $ArticleListRouteExtension on ArticleListRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $ArticleContentRouteExtension on ArticleContentRoute {
-  static ArticleContentRoute _fromState(GoRouterState state) =>
-      ArticleContentRoute(
+extension $ArticlesYearRouteExtension on ArticlesYearRoute {
+  static ArticlesYearRoute _fromState(GoRouterState state) =>
+      ArticlesYearRoute(year: int.parse(state.pathParameters['year']!)!);
+
+  String get location => GoRouteData.$location(
+    '/articles/${Uri.encodeComponent(year.toString())}',
+  );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ArticlesMonthRouteExtension on ArticlesMonthRoute {
+  static ArticlesMonthRoute _fromState(GoRouterState state) =>
+      ArticlesMonthRoute(
         year: int.parse(state.pathParameters['year']!)!,
         month: int.parse(state.pathParameters['month']!)!,
-        fileName: state.pathParameters['fileName']!,
       );
+
+  String get location => GoRouteData.$location(
+    '/articles/${Uri.encodeComponent(year.toString())}/${Uri.encodeComponent(month.toString())}',
+  );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $MarkdownRouteExtension on MarkdownRoute {
+  static MarkdownRoute _fromState(GoRouterState state) => MarkdownRoute(
+    year: int.parse(state.pathParameters['year']!)!,
+    month: int.parse(state.pathParameters['month']!)!,
+    fileName: state.pathParameters['fileName']!,
+  );
 
   String get location => GoRouteData.$location(
     '/articles/${Uri.encodeComponent(year.toString())}/${Uri.encodeComponent(month.toString())}/${Uri.encodeComponent(fileName)}',
