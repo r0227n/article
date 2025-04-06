@@ -1,9 +1,9 @@
-import 'package:article_viewer/domain/models/article.dart';
-import 'package:article_viewer/ui/article/view_model/article_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'article_list_tile.dart';
+import '../view_model/article_list_view_model.dart';
 import '../../../routing/router.dart';
+import '../../../domain/models/article.dart';
 
 class ArticleListScreen extends ConsumerStatefulWidget {
   const ArticleListScreen({super.key, this.year, this.month});
@@ -42,8 +42,8 @@ class _ArticleListScreenState extends ConsumerState<ArticleListScreen> {
                 itemBuilder: (context, index) {
                   final article = articles[index];
 
-                  return ListTile(
-                    title: Text(article.title),
+                  return ArticleListTile(
+                    article,
                     onTap: () {
                       MarkdownRoute(
                         year: article.year,

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import '../ui/article/widgets/article_content_screen.dart';
 import '../ui/article/widgets/article_list_screen.dart';
 
@@ -80,7 +81,7 @@ class MarkdownRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final path = '$year/${month.toString().padLeft(2, '0')}/$fileName';
+    final path = '$year/${DateFormat('MM').format(DateTime(0, month))}/$fileName';
 
     return ArticleContentScreen(path: path);
   }
