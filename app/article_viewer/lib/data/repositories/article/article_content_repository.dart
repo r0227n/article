@@ -12,6 +12,10 @@ ArticleContentRepository articleContentRepository(Ref ref) {
 }
 
 class ArticleContentRepository {
+  const ArticleContentRepository({this.assetsPath = 'assets'});
+
+  final String assetsPath;
+
   Future<List<String>> getAll({required ArticleMeta meta}) async {
     final contentFiles = meta.articles.map((e) => e.filePath).toList();
 
@@ -24,7 +28,7 @@ class ArticleContentRepository {
   }
 
   Future<String> get({required Article article}) async {
-    final filePath = 'assets/${article.filePath}';
+    final filePath = '$assetsPath/${article.filePath}';
     final content = await rootBundle.loadString(filePath);
     return content;
   }

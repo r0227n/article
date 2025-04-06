@@ -16,25 +16,23 @@ ArticleService articleService(Ref ref) {
 }
 
 class ArticleService {
-  const ArticleService(this.metaRepository, this.contentRepository)
-    : assetsMetapath = 'assets/meta';
+  const ArticleService(this.metaRepository, this.contentRepository);
 
   final ArticleMetaRepository metaRepository;
   final ArticleContentRepository contentRepository;
-  final String assetsMetapath;
 
   Future<List<ArticleMeta>> getArticleMetaAll() async {
-    return metaRepository.getAll(path: assetsMetapath);
+    return metaRepository.getAll();
   }
 
   Future<List<Article>> getArticleAll() async {
-    final meta = await metaRepository.getAll(path: assetsMetapath);
+    final meta = await metaRepository.getAll();
 
     return meta.expand((e) => e.articles).toList();
   }
 
   Future<List<Article>> getArticlesByYear(int year) async {
-    final meta = await metaRepository.getByYear(year: year, path: assetsMetapath);
+    final meta = await metaRepository.getByYear(year: year);
 
     return meta.articles;
   }

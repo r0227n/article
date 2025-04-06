@@ -13,10 +13,14 @@ ArticleMetaRepository articleMetaRepository(Ref ref) {
 }
 
 class ArticleMetaRepository {
-  Future<List<ArticleMeta>> getAll({required String path}) async {
+  const ArticleMetaRepository({this.assetsMetaPath = 'assets/meta'});
+
+  final String assetsMetaPath;
+
+  Future<List<ArticleMeta>> getAll() async {
     final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
 
-    final metaFiles = manifest.listAssets().where((e) => e.startsWith(path)).toList();
+    final metaFiles = manifest.listAssets().where((e) => e.startsWith(assetsMetaPath)).toList();
     return Future.wait(
       metaFiles.map((path) async {
         final jsonString = await rootBundle.loadString(path);
@@ -25,9 +29,9 @@ class ArticleMetaRepository {
     );
   }
 
-  Future<ArticleMeta> getByYear({required int year, required String path}) async {
+  Future<ArticleMeta> getByYear({required int year}) async {
     try {
-      final filePath = '$path/$year.json';
+      final filePath = '$assetsMetaPath/$year.json';
       final content = await rootBundle.loadString(filePath);
       return ArticleMeta.fromJson(json.decode(content));
     } catch (e) {
