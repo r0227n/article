@@ -30,8 +30,14 @@ class _ArticleListScreenState extends ConsumerState<ArticleListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final title = switch ((widget.year, widget.month)) {
+      (int year, null) => '$year年の記事',
+      (int year, int month) => '$year年$month月の記事',
+      _ => 'すべての記事',
+    };
+
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text(title), centerTitle: false),
       body: FutureBuilder<List<Article>>(
         future: futureArticles,
         builder: (context, snapshot) {
