@@ -58,6 +58,20 @@ class ArticlesRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return const ArticleListScreen();
   }
+
+  @override
+  String? redirect(BuildContext context, GoRouterState state) {
+    for (final parameter in state.pathParameters.entries) {
+      switch (parameter.key) {
+        case 'year' when int.tryParse(parameter.value) == null:
+          return const NotFoundRoute().location;
+        case 'month' when int.tryParse(parameter.value) == null:
+          return const NotFoundRoute().location;
+      }
+    }
+
+    return null;
+  }
 }
 
 class ArticlesYearRoute extends GoRouteData {
