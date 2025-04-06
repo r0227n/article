@@ -12,9 +12,9 @@ ArticleContentRepository articleContentRepository(Ref ref) {
 }
 
 class ArticleContentRepository {
-  const ArticleContentRepository({this.assetsPath = 'assets'});
+  const ArticleContentRepository({this.assetsArticlesPath = 'assets/articles'});
 
-  final String assetsPath;
+  final String assetsArticlesPath;
 
   Future<List<String>> getAll({required ArticleMeta meta}) async {
     final contentFiles = meta.articles.map((e) => e.filePath).toList();
@@ -27,18 +27,12 @@ class ArticleContentRepository {
     );
   }
 
-  Future<String> get({required Article article}) async {
-    final filePath = '$assetsPath/${article.filePath}';
-    final content = await rootBundle.loadString(filePath);
-    return content;
-  }
-
   Future<String> getByPath({required String path}) async {
     if (!path.endsWith('.md')) {
       throw ArgumentError('$path is not a markdown file');
     }
 
-    final content = await rootBundle.loadString(path);
+    final content = await rootBundle.loadString('$assetsArticlesPath/$path');
     return content;
   }
 }

@@ -37,11 +37,6 @@ class ArticleService {
     return meta.articles;
   }
 
-  Future<String> getContent(Article article) async {
-    final content = await contentRepository.get(article: article);
-    return content;
-  }
-
   Future<String> getContentByPath(String path) async {
     final content = await contentRepository.getByPath(path: path);
     return content;
