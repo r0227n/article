@@ -135,7 +135,7 @@ extension $NotFoundRouteExtension on NotFoundRoute {
 // RiverpodGenerator
 // **************************************************************************
 
-String _$routerHash() => r'724b2e499360e00730546f9d89e2052a1d77f482';
+String _$routerHash() => r'3151770a0cfef084dc2e6838d939b5d373d8d907';
 
 /// See also [router].
 @ProviderFor(router)

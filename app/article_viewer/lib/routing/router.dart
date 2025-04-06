@@ -20,7 +20,7 @@ GoRouter router(Ref ref) {
     redirect: (context, state) {
       // NOTE: ルートディレクトリを決めていないため、一旦/articlesにリダイレクト
       if (state.uri.path == '/') {
-        return ArticlesRoute().location;
+        return const ArticlesRoute().location;
       }
 
       // pathに全角数字が含まれている場合、半角数字に変換
@@ -69,12 +69,6 @@ class ArticlesYearRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return ArticleListScreen(year: year);
   }
-
-  @override
-  String? redirect(BuildContext context, GoRouterState state) {
-    final path = ArticlesRoute().location;
-    return '$path/$year';
-  }
 }
 
 class ArticlesMonthRoute extends GoRouteData {
@@ -86,6 +80,15 @@ class ArticlesMonthRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ArticleListScreen(year: year, month: month);
+  }
+
+  @override
+  String? redirect(BuildContext context, GoRouterState state) {
+    if (month < 1 || month > 12) {
+      return const NotFoundRoute().location;
+    }
+
+    return null;
   }
 }
 
