@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'article_empty.dart';
 import 'article_list_tile.dart';
 import '../view_model/article_list_view_model.dart';
 import '../../../routing/router.dart';
@@ -55,11 +56,9 @@ class _ArticleListScreenState extends ConsumerState<ArticleListScreen> {
                 },
               );
             case (ConnectionState.done, List<Article> articles) when articles.isEmpty:
-              return const Center(child: Text('データがありません'));
-            case (ConnectionState.done, null):
-              return const Center(child: Text('エラーが発生しました'));
+              return ArticleEmpty(year: widget.year, month: widget.month);
             default:
-              return const SizedBox.shrink();
+              return const Center(child: Text('エラーが発生しました'));
           }
         },
       ),
