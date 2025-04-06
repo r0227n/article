@@ -1,9 +1,11 @@
-import 'package:article_viewer/domain/models/article.dart';
-import 'package:article_viewer/ui/article/view_model/article_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'article_empty.dart';
+import 'article_list_tile.dart';
+import '../view_model/article_list_view_model.dart';
 import '../../../routing/router.dart';
+import '../../../domain/models/article.dart';
+import '../../core/ui/error_screen.dart';
 
 class ArticleListScreen extends ConsumerStatefulWidget {
   const ArticleListScreen({super.key, this.year, this.month});
@@ -28,8 +30,14 @@ class _ArticleListScreenState extends ConsumerState<ArticleListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final title = switch ((widget.year, widget.month)) {
+      (int year, null) => '$year年の記事',
+      (int year, int month) => '$year年$month月の記事',
+      _ => 'すべての記事',
+    };
+
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text(title), centerTitle: false),
       body: FutureBuilder<List<Article>>(
         future: futureArticles,
         builder: (context, snapshot) {
@@ -42,8 +50,8 @@ class _ArticleListScreenState extends ConsumerState<ArticleListScreen> {
                 itemBuilder: (context, index) {
                   final article = articles[index];
 
-                  return ListTile(
-                    title: Text(article.title),
+                  return ArticleListTile(
+                    article,
                     onTap: () {
                       MarkdownRoute(
                         year: article.year,
@@ -55,11 +63,12 @@ class _ArticleListScreenState extends ConsumerState<ArticleListScreen> {
                 },
               );
             case (ConnectionState.done, List<Article> articles) when articles.isEmpty:
-              return const Center(child: Text('データがありません'));
-            case (ConnectionState.done, null):
-              return const Center(child: Text('エラーが発生しました'));
+              return ArticleEmpty(year: widget.year, month: widget.month);
             default:
-              return const SizedBox.shrink();
+              return ErrorScreen(
+                error: snapshot.error ?? '不明なエラー',
+                stackTrace: snapshot.stackTrace,
+              );
           }
         },
       ),

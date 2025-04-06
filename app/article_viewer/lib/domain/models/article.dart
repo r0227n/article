@@ -33,4 +33,5 @@ sealed class Article with _$Article {
   factory Article.fromJson(Map<String, dynamic> json) => _$ArticleFromJson(json);
 
   String get fileName => filePath.split('/').last;
+  DateTime get date => DateTime(year, month, day);
 }
