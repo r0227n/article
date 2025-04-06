@@ -1,13 +1,22 @@
-import 'dart:convert';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:article_viewer/domain/models/article.dart';
+
+part 'article_meta_repository.g.dart';
+
+@riverpod
+ArticleMetaRepository articleMetaRepository(Ref ref) {
+  return ArticleMetaRepository();
+}
 
 class ArticleMetaRepository {
   Future<List<ArticleMeta>> getAll({required String path}) async {
     final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
 
-    final metaFiles = manifest.listAssets().where((path) => path.startsWith(path)).toList();
+    final metaFiles = manifest.listAssets().where((e) => e.startsWith(path)).toList();
     return Future.wait(
       metaFiles.map((path) async {
         final jsonString = await rootBundle.loadString(path);

@@ -47,3 +47,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/meta/
+    # TODO: deploy pipelineでroot/articles からassets にコピーする
+    - assets/articles/2025/01/
