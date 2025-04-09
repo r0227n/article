@@ -6,7 +6,7 @@ part of 'router.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$articlesRoute];
+List<RouteBase> get $appRoutes => [$articlesRoute, $notFoundRoute];
 
 RouteBase get $articlesRoute => GoRouteData.$route(
   path: '/articles',
@@ -110,11 +110,32 @@ extension $MarkdownRouteExtension on MarkdownRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
+RouteBase get $notFoundRoute => GoRouteData.$route(
+  path: '/not-found',
+
+  factory: $NotFoundRouteExtension._fromState,
+);
+
+extension $NotFoundRouteExtension on NotFoundRoute {
+  static NotFoundRoute _fromState(GoRouterState state) => const NotFoundRoute();
+
+  String get location => GoRouteData.$location('/not-found');
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$routerHash() => r'd60f0b22c24f5ba36e1a7f91526bbdc2c361a429';
+String _$routerHash() => r'3151770a0cfef084dc2e6838d939b5d373d8d907';
 
 /// See also [router].
 @ProviderFor(router)

@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'ext_route.dart';
 import '../ui/article/widgets/article_content_screen.dart';
 import '../ui/article/widgets/article_list_screen.dart';
+import '../ui/core/ui/not_found_screen.dart';
 
 part 'router.g.dart';
 
@@ -17,10 +19,19 @@ GoRouter router(Ref ref) {
     initialLocation: '/',
     redirect: (context, state) {
       // NOTE: ルートディレクトリを決めていないため、一旦/articlesにリダイレクト
-      if (!state.uri.path.startsWith('/articles')) {
-        return '/articles';
+      if (state.uri.path == '/') {
+        return const ArticlesRoute().location;
       }
+
+      // pathに全角数字が含まれている場合、半角数字に変換
+      if (state.uri.containsFullWidthDigits()) {
+        return '/${state.uri.pathSegmentsFullWidthToHalfWidth().join('/')}';
+      }
+
       return null;
+    },
+    errorBuilder: (context, state) {
+      return const NotFoundRoute().build(context, state);
     },
     debugLogDiagnostics: kDebugMode,
   );
@@ -47,6 +58,20 @@ class ArticlesRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return const ArticleListScreen();
   }
+
+  @override
+  String? redirect(BuildContext context, GoRouterState state) {
+    for (final parameter in state.pathParameters.entries) {
+      switch (parameter.key) {
+        case 'year' when int.tryParse(parameter.value) == null:
+          return const NotFoundRoute().location;
+        case 'month' when int.tryParse(parameter.value) == null:
+          return const NotFoundRoute().location;
+      }
+    }
+
+    return null;
+  }
 }
 
 class ArticlesYearRoute extends GoRouteData {
@@ -70,6 +95,15 @@ class ArticlesMonthRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return ArticleListScreen(year: year, month: month);
   }
+
+  @override
+  String? redirect(BuildContext context, GoRouterState state) {
+    if (month < 1 || month > 12) {
+      return const NotFoundRoute().location;
+    }
+
+    return null;
+  }
 }
 
 class MarkdownRoute extends GoRouteData {
@@ -84,5 +118,15 @@ class MarkdownRoute extends GoRouteData {
     final path = '$year/${DateFormat('MM').format(DateTime(0, month))}/$fileName';
 
     return ArticleContentScreen(path: path);
+  }
+}
+
+@TypedGoRoute<NotFoundRoute>(path: '/not-found')
+class NotFoundRoute extends GoRouteData {
+  const NotFoundRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const NotFoundScreen();
   }
 }
