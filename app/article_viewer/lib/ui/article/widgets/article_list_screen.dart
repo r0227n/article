@@ -37,14 +37,15 @@ class _ArticleListScreenState extends ConsumerState<ArticleListScreen> {
     };
 
     return Scaffold(
-      appBar: AppBar(title: Text(title), centerTitle: false),
+      appBar: AppBar(title: Text(title)),
       body: FutureBuilder<List<Article>>(
         future: futureArticles,
         builder: (context, snapshot) {
           switch ((snapshot.connectionState, snapshot.data)) {
             case (ConnectionState.waiting, _):
               return const Center(child: CircularProgressIndicator());
-            case (ConnectionState.done, List<Article> articles) when articles.isNotEmpty:
+            case (ConnectionState.done, List<Article> articles)
+                when articles.isNotEmpty:
               return ListView.builder(
                 itemCount: articles.length,
                 itemBuilder: (context, index) {
@@ -62,7 +63,8 @@ class _ArticleListScreenState extends ConsumerState<ArticleListScreen> {
                   );
                 },
               );
-            case (ConnectionState.done, List<Article> articles) when articles.isEmpty:
+            case (ConnectionState.done, List<Article> articles)
+                when articles.isEmpty:
               return ArticleEmpty(year: widget.year, month: widget.month);
             default:
               return ErrorScreen(
