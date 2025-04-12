@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:article_viewer/data/services/article_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../domain/models/markdown_cotent.dart';
 
@@ -39,10 +40,10 @@ class _ArticleContentScreenState extends ConsumerState<ArticleContentScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_articleTitle ?? '記事'),
-        actions: const [
+        actions: [
           Padding(
             padding: EdgeInsets.only(right: 12.0),
-            child: ShareActionMenu(),
+            child: ShareActionMenu(title: _articleTitle ?? '記事'),
           ),
         ],
       ),
@@ -65,7 +66,9 @@ class _ArticleContentScreenState extends ConsumerState<ArticleContentScreen> {
 }
 
 class ShareActionMenu extends StatefulWidget {
-  const ShareActionMenu({super.key});
+  const ShareActionMenu({super.key, required this.title});
+
+  final String title;
 
   @override
   State<ShareActionMenu> createState() => _ShareActionMenuState();
@@ -78,6 +81,18 @@ class _ShareActionMenuState extends State<ShareActionMenu> {
   void dispose() {
     _buttonFocusNode.dispose();
     super.dispose();
+  }
+
+  // X（Twitter）の投稿画面のURL
+  Future<void> _shareToX({required String title, required String url}) async {
+    final tweetText = Uri.encodeComponent("$title\n$url");
+    final uri = Uri.parse('https://twitter.com/intent/tweet?text=$tweetText');
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw Exception('Xに投稿できませんでした');
+    }
   }
 
   @override
@@ -108,7 +123,40 @@ class _ShareActionMenuState extends State<ShareActionMenu> {
           leadingIcon: const Icon(Icons.link),
           child: const Text('URLをコピーする'),
         ),
-        MenuItemButton(onPressed: () {}, child: const Text('Xに投稿する')),
+        MenuItemButton(
+          onPressed: () async {
+            final url = Uri.decodeComponent(
+              GoRouter.of(context).state.uri.path,
+            );
+            try {
+              await _shareToX(title: widget.title, url: url);
+            } catch (e) {
+              if (!context.mounted) {
+                return;
+              }
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                  content: Text('Xに投稿できませんでした'),
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              );
+            }
+          },
+          leadingIcon: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 4.0),
+            child: Text(
+              'X',
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          child: const Text('Xに投稿する'),
+        ),
       ],
       builder: (_, MenuController controller, Widget? child) {
         return IconButton(
