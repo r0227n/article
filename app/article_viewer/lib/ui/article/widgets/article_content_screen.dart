@@ -89,6 +89,7 @@ class _ShareActionMenuState extends State<ShareActionMenu> {
     final uri = Uri.parse('https://twitter.com/intent/tweet?text=$tweetText');
 
     if (await canLaunchUrl(uri)) {
+      // TODO: デプロイ後、ちゃんとホスト部分も投稿文に含んでいるか確認する
       await launchUrl(uri);
     } else {
       throw Exception('Xに投稿できませんでした');
@@ -105,6 +106,7 @@ class _ShareActionMenuState extends State<ShareActionMenu> {
             final url = Uri.decodeComponent(
               GoRouter.of(context).state.uri.path,
             );
+            // TODO: デプロイ後、ちゃんとホスト部分もコピーされているか確認する
             await Clipboard.setData(ClipboardData(text: url));
 
             if (!context.mounted) {
