@@ -18,17 +18,24 @@ class ArticleContentScreen extends ConsumerStatefulWidget {
 class _ArticleContentScreenState extends ConsumerState<ArticleContentScreen> {
   late final Future<MarkdownCotent> _contentFuture;
 
+  String? _articleTitle;
+
   @override
   void initState() {
     super.initState();
     final articleService = ref.read(articleServiceProvider);
-    _contentFuture = articleService.getContentByPath(widget.path);
+    _contentFuture = articleService.getContentByPath(widget.path).then((md) {
+      setState(() {
+        _articleTitle = md.title;
+      });
+      return md;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('記事')),
+      appBar: AppBar(title: Text(_articleTitle ?? '記事')),
       body: FutureBuilder<MarkdownCotent>(
         future: _contentFuture,
         builder: (context, snapshot) {
