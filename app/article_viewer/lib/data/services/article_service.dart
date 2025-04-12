@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../repositories/article/article_meta_repository.dart';
 import '../repositories/article/article_content_repository.dart';
 import '../../../domain/models/article.dart';
-
+import '../../../domain/models/markdown_cotent.dart';
 part 'article_service.g.dart';
 
 @riverpod
@@ -37,8 +37,8 @@ class ArticleService {
     return meta.articles;
   }
 
-  Future<String> getContentByPath(String path) async {
+  Future<MarkdownCotent> getContentByPath(String path) async {
     final content = await contentRepository.getByPath(path: path);
-    return content;
+    return MarkdownCotent.fromMarkdown(content);
   }
 }
