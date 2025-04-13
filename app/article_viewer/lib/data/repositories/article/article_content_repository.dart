@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/models/article.dart';
@@ -12,7 +13,10 @@ ArticleContentRepository articleContentRepository(Ref ref) {
 }
 
 class ArticleContentRepository {
-  const ArticleContentRepository({this.assetsArticlesPath = 'assets/articles'});
+  const ArticleContentRepository({
+    this.assetsArticlesPath =
+        kReleaseMode ? 'assets/assets/articles' : 'assets/articles',
+  });
 
   final String assetsArticlesPath;
 
