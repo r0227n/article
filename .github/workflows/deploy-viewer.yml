@@ -1,0 +1,167 @@
+name: Deploy Flutter Web to GitHub Pages
+
+on:
+  pull_request:
+    branches: [ develop ] # TODO: mainに変更する
+    types: [ closed ]
+    paths:
+      - 'app/article_viewer/**'
+      - 'articles/**'
+  workflow_dispatch:    # オーナーのみ手動実行可能
+    inputs:
+      reason:
+        description: 'Reason for manual deployment'
+        required: true
+        default: 'Manual deployment'
+
+env:
+  APP_PATH: app/article_viewer
+
+jobs:
+  build-and-deploy:
+    # マージされたPRまたはオーナーによる手動実行時に実行
+    if: github.event.pull_request.merged == true || (github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner)
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 全履歴を取得
+
+      - name: Get Flutter version from FVM config
+        id: fvm-config
+        run: |
+          if [ -f ${{ env.APP_PATH }}/.fvmrc ]; then
+            FLUTTER_VERSION=$(cat ${{ env.APP_PATH }}/.fvmrc | jq -r .flutter)
+            echo "Detected Flutter version from FVM: $FLUTTER_VERSION"
+            echo "flutter_version=$FLUTTER_VERSION" >> $GITHUB_OUTPUT
+          else
+            echo "No FVM config found, using default Flutter version"
+          fi
+
+      - name: Update Flutter SDK version if FVM config exists
+        if: steps.fvm-config.outputs.flutter_version != ''
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ steps.fvm-config.outputs.flutter_version }}
+          channel: 'stable'
+          cache: true
+
+      - name: Flutter version
+        run: flutter --version
+
+      # TODO: analyzeの問題を解決する
+      # - name: Analyze project
+      #   run: flutter analyze --no-fatal-infos
+
+      # TODO: テストを作成する
+      # - name: Run tests (if any)
+      #   run: flutter test || true  # テストがない場合でもエラーにならないようにする
+
+      - name: Get changed markdown files
+        id: changed-files
+        run: |
+          # Get all markdown files in the articles/ directory
+          CHANGED_FILES=$(find articles -name "*.md" | tr '\n' ',' | sed 's/,$//' || echo "")
+          echo "Markdown files: $CHANGED_FILES"
+          
+          # Format the list for CLI input
+          if [ -n "$CHANGED_FILES" ]; then
+            # Create a comma-separated list of file paths
+            FORMATTED_FILES=$CHANGED_FILES
+            echo "files=$FORMATTED_FILES" >> $GITHUB_OUTPUT
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "No markdown files found"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build markdown_metadata_cli
+        run: |
+          cd cli/markdown_metadata_cli
+          dart pub get
+          mkdir -p bin
+          dart compile exe bin/markdown_metadata_cli.dart -o bin/markdown_metadata_cli
+
+
+      - name: Generate asset directories list for pubspec.yaml
+        id: asset-dirs
+        run: |
+          # Find all year/month directories in articles folder
+          ASSET_DIRS=$(find articles -type d -regex "articles/[0-9]\{4\}/[0-9]\{2\}" | sed 's/^articles/assets/' | sort | uniq)
+          
+          # Format the directories for pubspec.yaml
+          FORMATTED_DIRS=""
+          for dir in $ASSET_DIRS; do
+            FORMATTED_DIRS="${FORMATTED_DIRS}    - $dir\n"
+          done
+          
+          echo "Generated asset directories:"
+          echo -e "$FORMATTED_DIRS"
+          
+          # Save to a temporary file
+          echo -e "$FORMATTED_DIRS" > /tmp/asset_dirs.txt
+      
+      - name: Update pubspec.yaml with asset directories
+        run: |
+          cd ${{ env.APP_PATH }}
+          
+          # Create backup of original pubspec.yaml
+          cp pubspec.yaml pubspec.yaml.bak
+          
+          # Find the assets section and add our directories
+          awk '
+          /^flutter:/ {in_flutter=1}
+          /^  assets:/ {if(in_flutter==1) {in_assets=1; print; while(getline < "/tmp/asset_dirs.txt") {print $0}; next}}
+          {print}
+          ' pubspec.yaml.bak > pubspec.yaml
+          
+          # Show the changes
+          echo "Updated pubspec.yaml assets section:"
+          grep -A 20 "assets:" pubspec.yaml
+          
+          # Run flutter pub get to update dependencies with new assets
+          flutter pub get
+
+      - name: Build web
+        run: |
+          cd ${{ env.APP_PATH }}
+
+          flutter build web --release --wasm \
+            --base-href /${{ github.event.repository.name }}/ \
+            --dart-define=ASSET_ARTICLES_PATH=${{ github.event.repository.name }}/assets/articles \
+            --dart-define=ASSET_META_PATH=${{ github.event.repository.name }}/assets/meta
+
+      - name: Generate metadata for changed files
+        run: |
+          echo "Processing changed markdown files: ${{ steps.changed-files.outputs.files }}"
+          cli/markdown_metadata_cli/bin/markdown_metadata_cli \
+            --files ${{ steps.changed-files.outputs.files }} \
+            --output ${{ env.APP_PATH }}/build/web/assets/meta/
+
+      - name: Copy articles to build directory
+        run: |
+          echo "Copying articles directory to build/web/assets/"
+          cp -r articles ${{ env.APP_PATH }}/build/web/assets/
+          echo "Articles directory copied successfully"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '${{ env.APP_PATH }}/build/web'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        if: github.event_name != 'pull_request'  # PRではデプロイしない
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
