@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:path/path.dart' as p;
-import '../models/article_metadata.dart';
-import '../io/index_io.dart';
-import '../models/index_metadata.dart';
-import '../models/year_article.dart';
+import 'index_io.dart';
+import 'package:article_models/article_models.dart';
 
 class YearIndex extends IndexIo with IndexIoMixin {
   @override
