@@ -18,13 +18,13 @@ class AssetLoaderHelper {
 
   /// ファイルをロードする汎用メソッド
   static Future<String> loadFile(String relativePath) async {
+    final url = Uri.base.host + relativePath;
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      return response.body;
+    }
     if (kIsWeb && !Uri.base.host.contains('localhost')) {
       // Webの場合、まずHTTPでロードを試みる
-      final url = Uri.base.host + baseWebPath + relativePath;
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        return response.body;
-      }
     }
 
     // Webでないか、HTTPロードに失敗した場合はassetからロード
