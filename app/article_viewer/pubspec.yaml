@@ -62,6 +62,3 @@ flutter:
 
   assets:
     - assets/meta/
-    # TODO: deploy pipelineでroot/articles からassets にコピーする
-    # - assets/articles/2025/01/
-    # - assets/articles/2025/04/
