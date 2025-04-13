@@ -4,7 +4,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'index_metadata_dto.dart';
+part of 'index_metadata.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -12,31 +12,24 @@ part of 'index_metadata_dto.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-IndexFileDto _$IndexFileDtoFromJson(
-  Map<String, dynamic> json
-) {
-    return _IndexFile.fromJson(
-      json
-    );
-}
 
 /// @nodoc
-mixin _$IndexFileDto {
+mixin _$IndexFile {
 
- List<IndexMetadataDto> get indexes;
-/// Create a copy of IndexFileDto
+ List<IndexMetadata> get indexes;
+/// Create a copy of IndexFile
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$IndexFileDtoCopyWith<IndexFileDto> get copyWith => _$IndexFileDtoCopyWithImpl<IndexFileDto>(this as IndexFileDto, _$identity);
+$IndexFileCopyWith<IndexFile> get copyWith => _$IndexFileCopyWithImpl<IndexFile>(this as IndexFile, _$identity);
 
-  /// Serializes this IndexFileDto to a JSON map.
+  /// Serializes this IndexFile to a JSON map.
   Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is IndexFileDto&&const DeepCollectionEquality().equals(other.indexes, indexes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is IndexFile&&const DeepCollectionEquality().equals(other.indexes, indexes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,18 +38,18 @@ int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(
 
 @override
 String toString() {
-  return 'IndexFileDto(indexes: $indexes)';
+  return 'IndexFile(indexes: $indexes)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $IndexFileDtoCopyWith<$Res>  {
-  factory $IndexFileDtoCopyWith(IndexFileDto value, $Res Function(IndexFileDto) _then) = _$IndexFileDtoCopyWithImpl;
+abstract mixin class $IndexFileCopyWith<$Res>  {
+  factory $IndexFileCopyWith(IndexFile value, $Res Function(IndexFile) _then) = _$IndexFileCopyWithImpl;
 @useResult
 $Res call({
- List<IndexMetadataDto> indexes
+ List<IndexMetadata> indexes
 });
 
 
@@ -64,19 +57,19 @@ $Res call({
 
 }
 /// @nodoc
-class _$IndexFileDtoCopyWithImpl<$Res>
-    implements $IndexFileDtoCopyWith<$Res> {
-  _$IndexFileDtoCopyWithImpl(this._self, this._then);
+class _$IndexFileCopyWithImpl<$Res>
+    implements $IndexFileCopyWith<$Res> {
+  _$IndexFileCopyWithImpl(this._self, this._then);
 
-  final IndexFileDto _self;
-  final $Res Function(IndexFileDto) _then;
+  final IndexFile _self;
+  final $Res Function(IndexFile) _then;
 
-/// Create a copy of IndexFileDto
+/// Create a copy of IndexFile
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? indexes = null,}) {
   return _then(_self.copyWith(
 indexes: null == indexes ? _self.indexes : indexes // ignore: cast_nullable_to_non_nullable
-as List<IndexMetadataDto>,
+as List<IndexMetadata>,
   ));
 }
 
@@ -86,19 +79,19 @@ as List<IndexMetadataDto>,
 /// @nodoc
 @JsonSerializable()
 
-class _IndexFile implements IndexFileDto {
-  const _IndexFile({required final  List<IndexMetadataDto> indexes}): _indexes = indexes;
+class _IndexFile implements IndexFile {
+  const _IndexFile({required final  List<IndexMetadata> indexes}): _indexes = indexes;
   factory _IndexFile.fromJson(Map<String, dynamic> json) => _$IndexFileFromJson(json);
 
- final  List<IndexMetadataDto> _indexes;
-@override List<IndexMetadataDto> get indexes {
+ final  List<IndexMetadata> _indexes;
+@override List<IndexMetadata> get indexes {
   if (_indexes is EqualUnmodifiableListView) return _indexes;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_indexes);
 }
 
 
-/// Create a copy of IndexFileDto
+/// Create a copy of IndexFile
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
@@ -120,18 +113,18 @@ int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(
 
 @override
 String toString() {
-  return 'IndexFileDto(indexes: $indexes)';
+  return 'IndexFile(indexes: $indexes)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$IndexFileCopyWith<$Res> implements $IndexFileDtoCopyWith<$Res> {
+abstract mixin class _$IndexFileCopyWith<$Res> implements $IndexFileCopyWith<$Res> {
   factory _$IndexFileCopyWith(_IndexFile value, $Res Function(_IndexFile) _then) = __$IndexFileCopyWithImpl;
 @override @useResult
 $Res call({
- List<IndexMetadataDto> indexes
+ List<IndexMetadata> indexes
 });
 
 
@@ -146,12 +139,12 @@ class __$IndexFileCopyWithImpl<$Res>
   final _IndexFile _self;
   final $Res Function(_IndexFile) _then;
 
-/// Create a copy of IndexFileDto
+/// Create a copy of IndexFile
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? indexes = null,}) {
   return _then(_IndexFile(
 indexes: null == indexes ? _self._indexes : indexes // ignore: cast_nullable_to_non_nullable
-as List<IndexMetadataDto>,
+as List<IndexMetadata>,
   ));
 }
 
@@ -160,22 +153,22 @@ as List<IndexMetadataDto>,
 
 
 /// @nodoc
-mixin _$IndexMetadataDto {
+mixin _$IndexMetadata {
 
  int get year; int get month; int get count; String get path;
-/// Create a copy of IndexMetadataDto
+/// Create a copy of IndexMetadata
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$IndexMetadataDtoCopyWith<IndexMetadataDto> get copyWith => _$IndexMetadataDtoCopyWithImpl<IndexMetadataDto>(this as IndexMetadataDto, _$identity);
+$IndexMetadataCopyWith<IndexMetadata> get copyWith => _$IndexMetadataCopyWithImpl<IndexMetadata>(this as IndexMetadata, _$identity);
 
-  /// Serializes this IndexMetadataDto to a JSON map.
+  /// Serializes this IndexMetadata to a JSON map.
   Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is IndexMetadataDto&&(identical(other.year, year) || other.year == year)&&(identical(other.month, month) || other.month == month)&&(identical(other.count, count) || other.count == count)&&(identical(other.path, path) || other.path == path));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is IndexMetadata&&(identical(other.year, year) || other.year == year)&&(identical(other.month, month) || other.month == month)&&(identical(other.count, count) || other.count == count)&&(identical(other.path, path) || other.path == path));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -184,15 +177,15 @@ int get hashCode => Object.hash(runtimeType,year,month,count,path);
 
 @override
 String toString() {
-  return 'IndexMetadataDto(year: $year, month: $month, count: $count, path: $path)';
+  return 'IndexMetadata(year: $year, month: $month, count: $count, path: $path)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $IndexMetadataDtoCopyWith<$Res>  {
-  factory $IndexMetadataDtoCopyWith(IndexMetadataDto value, $Res Function(IndexMetadataDto) _then) = _$IndexMetadataDtoCopyWithImpl;
+abstract mixin class $IndexMetadataCopyWith<$Res>  {
+  factory $IndexMetadataCopyWith(IndexMetadata value, $Res Function(IndexMetadata) _then) = _$IndexMetadataCopyWithImpl;
 @useResult
 $Res call({
  int year, int month, int count, String path
@@ -203,14 +196,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$IndexMetadataDtoCopyWithImpl<$Res>
-    implements $IndexMetadataDtoCopyWith<$Res> {
-  _$IndexMetadataDtoCopyWithImpl(this._self, this._then);
+class _$IndexMetadataCopyWithImpl<$Res>
+    implements $IndexMetadataCopyWith<$Res> {
+  _$IndexMetadataCopyWithImpl(this._self, this._then);
 
-  final IndexMetadataDto _self;
-  final $Res Function(IndexMetadataDto) _then;
+  final IndexMetadata _self;
+  final $Res Function(IndexMetadata) _then;
 
-/// Create a copy of IndexMetadataDto
+/// Create a copy of IndexMetadata
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? year = null,Object? month = null,Object? count = null,Object? path = null,}) {
   return _then(_self.copyWith(
@@ -228,29 +221,29 @@ as String,
 /// @nodoc
 @JsonSerializable()
 
-class _IndexMetadataDto implements IndexMetadataDto {
-  const _IndexMetadataDto({required this.year, required this.month, required this.count, required this.path});
-  factory _IndexMetadataDto.fromJson(Map<String, dynamic> json) => _$IndexMetadataDtoFromJson(json);
+class _IndexMetadata implements IndexMetadata {
+  const _IndexMetadata({required this.year, required this.month, required this.count, required this.path});
+  factory _IndexMetadata.fromJson(Map<String, dynamic> json) => _$IndexMetadataFromJson(json);
 
 @override final  int year;
 @override final  int month;
 @override final  int count;
 @override final  String path;
 
-/// Create a copy of IndexMetadataDto
+/// Create a copy of IndexMetadata
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$IndexMetadataDtoCopyWith<_IndexMetadataDto> get copyWith => __$IndexMetadataDtoCopyWithImpl<_IndexMetadataDto>(this, _$identity);
+_$IndexMetadataCopyWith<_IndexMetadata> get copyWith => __$IndexMetadataCopyWithImpl<_IndexMetadata>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$IndexMetadataDtoToJson(this, );
+  return _$IndexMetadataToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _IndexMetadataDto&&(identical(other.year, year) || other.year == year)&&(identical(other.month, month) || other.month == month)&&(identical(other.count, count) || other.count == count)&&(identical(other.path, path) || other.path == path));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _IndexMetadata&&(identical(other.year, year) || other.year == year)&&(identical(other.month, month) || other.month == month)&&(identical(other.count, count) || other.count == count)&&(identical(other.path, path) || other.path == path));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -259,15 +252,15 @@ int get hashCode => Object.hash(runtimeType,year,month,count,path);
 
 @override
 String toString() {
-  return 'IndexMetadataDto(year: $year, month: $month, count: $count, path: $path)';
+  return 'IndexMetadata(year: $year, month: $month, count: $count, path: $path)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$IndexMetadataDtoCopyWith<$Res> implements $IndexMetadataDtoCopyWith<$Res> {
-  factory _$IndexMetadataDtoCopyWith(_IndexMetadataDto value, $Res Function(_IndexMetadataDto) _then) = __$IndexMetadataDtoCopyWithImpl;
+abstract mixin class _$IndexMetadataCopyWith<$Res> implements $IndexMetadataCopyWith<$Res> {
+  factory _$IndexMetadataCopyWith(_IndexMetadata value, $Res Function(_IndexMetadata) _then) = __$IndexMetadataCopyWithImpl;
 @override @useResult
 $Res call({
  int year, int month, int count, String path
@@ -278,17 +271,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$IndexMetadataDtoCopyWithImpl<$Res>
-    implements _$IndexMetadataDtoCopyWith<$Res> {
-  __$IndexMetadataDtoCopyWithImpl(this._self, this._then);
+class __$IndexMetadataCopyWithImpl<$Res>
+    implements _$IndexMetadataCopyWith<$Res> {
+  __$IndexMetadataCopyWithImpl(this._self, this._then);
 
-  final _IndexMetadataDto _self;
-  final $Res Function(_IndexMetadataDto) _then;
+  final _IndexMetadata _self;
+  final $Res Function(_IndexMetadata) _then;
 
-/// Create a copy of IndexMetadataDto
+/// Create a copy of IndexMetadata
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? year = null,Object? month = null,Object? count = null,Object? path = null,}) {
-  return _then(_IndexMetadataDto(
+  return _then(_IndexMetadata(
 year: null == year ? _self.year : year // ignore: cast_nullable_to_non_nullable
 as int,month: null == month ? _self.month : month // ignore: cast_nullable_to_non_nullable
 as int,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable

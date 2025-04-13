@@ -4,8 +4,8 @@ import 'package:collection/collection.dart';
 import 'package:path/path.dart' as p;
 import '../models/article_metadata.dart';
 import '../io/index_io.dart';
-import '../models/index_metadata_dto.dart';
-import '../models/year_article_dto.dart';
+import '../models/index_metadata.dart';
+import '../models/year_article.dart';
 
 class YearIndex extends IndexIo with IndexIoMixin {
   @override
@@ -24,7 +24,7 @@ class YearIndex extends IndexIo with IndexIoMixin {
       await file.create(recursive: true);
     }
 
-    final newDto = YearlyArticleDto(
+    final newDto = YearlyArticle(
       year: year,
       count: metadatas.length,
       lastUpdated: DateTime.now().toUtc(),
@@ -50,7 +50,7 @@ class YearIndex extends IndexIo with IndexIoMixin {
       metadatas,
       (ArticleMetadata metadata) => metadata.year,
     );
-    final List<IndexMetadataDto> indexMetadatas = [];
+    final List<IndexMetadata> indexMetadatas = [];
 
     await Future.wait(
       groupedByYear.entries.map((entry) async {
@@ -69,7 +69,7 @@ class YearIndex extends IndexIo with IndexIoMixin {
 
         // インデックスメタデータを追加
         indexMetadatas.add(
-          IndexMetadataDto(
+          IndexMetadata(
             year: year,
             month: articlesForYear.first.month,
             count: articlesForYear.length,
@@ -81,7 +81,7 @@ class YearIndex extends IndexIo with IndexIoMixin {
 
     // index.jsonを作成/更新
     final indexFile = File(p.join(path, 'index.json'));
-    final indexData = IndexFileDto(
+    final indexData = IndexFile(
       indexes:
           indexMetadatas..sort((a, b) => b.path.compareTo(a.path)), // 降順でソート
     );
@@ -105,7 +105,7 @@ class YearIndex extends IndexIo with IndexIoMixin {
     }
 
     // 既存のファイルがある場合は、内容を読み込んで更新
-    final yearArticle = YearlyArticleDto.fromJson(
+    final yearArticle = YearlyArticle.fromJson(
       jsonDecode(await file.readAsString()) as Map<String, dynamic>,
     );
 
@@ -130,7 +130,7 @@ class YearIndex extends IndexIo with IndexIoMixin {
 
     final allArticles = [...articlesToKeep, ...metadatas];
 
-    final updatedDto = YearlyArticleDto(
+    final updatedDto = YearlyArticle(
       year: year,
       count: allArticles.length,
       lastUpdated: DateTime.now().toUtc(),
