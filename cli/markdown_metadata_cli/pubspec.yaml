@@ -1,6 +1,7 @@
 name: markdown_metadata_cli
 description: A CLI tool that extracts metadata from Markdown articles and saves them as yearly JSON files
 version: 1.0.0
+publish_to: none
 # repository: https://github.com/my_org/my_repo
 
 environment:
@@ -8,6 +9,9 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
+  article_models:
+    path: ../../packages/article_models
+
   yaml: ^3.1.3
   args: ^2.7.0
   path: ^1.9.1
