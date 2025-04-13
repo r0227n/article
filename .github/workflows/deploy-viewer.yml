@@ -63,23 +63,18 @@ jobs:
       - name: Get changed markdown files
         id: changed-files
         run: |
-          # Get list of added or modified markdown files in the articles/ directory
-          # Get all markdown files if workflow_dispatch, otherwise get changed files
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            CHANGED_FILES=$(find articles -name "*.md" | tr '\n' ',' | sed 's/,$//' || echo "")
-          else
-            CHANGED_FILES=$(git diff --name-only --diff-filter=AM ${{ github.event.before }} ${{ github.sha }} | grep "^articles/.*\.md$" | tr '\n' ',' | sed 's/,$//' || echo "")
-          fi
-          echo "Changed markdown files: $CHANGED_FILES"
+          # Get all markdown files in the articles/ directory
+          CHANGED_FILES=$(find articles -name "*.md" | tr '\n' ',' | sed 's/,$//' || echo "")
+          echo "Markdown files: $CHANGED_FILES"
           
           # Format the list for CLI input
           if [ -n "$CHANGED_FILES" ]; then
             # Create a comma-separated list of file paths
-            FORMATTED_FILES=$(echo "$CHANGED_FILES" | tr '\n' ',' | sed 's/,$//')
+            FORMATTED_FILES=$CHANGED_FILES
             echo "files=$FORMATTED_FILES" >> $GITHUB_OUTPUT
             echo "has_changes=true" >> $GITHUB_OUTPUT
           else
-            echo "No markdown files changed"
+            echo "No markdown files found"
             echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
 
@@ -98,20 +93,18 @@ jobs:
       #       --files ${{ steps.changed-files.outputs.files }} \
       #       --output ${{ env.APP_PATH }}/lib/assets/meta/
 
-      
+      - name: Build web
+        run: |
+          cd ${{ env.APP_PATH }}
+          flutter build web --release --wasm \
+            --base-href /${{ github.event.repository.name }}/
+
       - name: Generate metadata for changed files
         run: |
           echo "Processing changed markdown files: ${{ steps.changed-files.outputs.files }}"
           cli/markdown_metadata_cli/bin/markdown_metadata_cli \
             --files ${{ steps.changed-files.outputs.files }} \
-            --output ${{ env.APP_PATH }}/lib/assets/meta/
-      - name: Build web
-        run: |
-          cd ${{ env.APP_PATH }}
-          flutter build web --release --wasm \
-            --base-href /${{ github.event.repository.name }}/ \
-            --dart-define=ASSET_ARTICLE_PATH=${{ github.event.repository.name }}/assets/articles \
-            --dart-define=ASSET_META_PATH=${{ github.event.repository.name }}/assets/meta
+            --output ${{ env.APP_PATH }}/build/web/assets/meta/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
