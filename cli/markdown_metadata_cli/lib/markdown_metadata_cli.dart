@@ -1,8 +1,11 @@
 import 'dart:io';
 import 'io/year_index.dart';
-import 'models/article_metadata.dart';
+import 'package:article_models/article_models.dart';
 
-Future<void> processMarkdownFiles(List<String> filePaths, String outputDir) async {
+Future<void> processMarkdownFiles(
+  List<String> filePaths,
+  String outputDir,
+) async {
   // 記事のメタデータを格納する変数
   final List<ArticleMetadata> metadatas = [];
 
