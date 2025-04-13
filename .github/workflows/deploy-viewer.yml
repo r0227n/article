@@ -109,10 +109,10 @@ jobs:
         run: |
           cd ${{ env.APP_PATH }}
           flutter build web --release --wasm \
-            --base-href /${{ github.event.repository.name }}/ 
+            --base-href /${{ github.event.repository.name }}/ \
             --dart-define=ASSET_ARTICLE_PATH=${{ github.event.repository.name }}/assets/articles \
             --dart-define=ASSET_META_PATH=${{ github.event.repository.name }}/assets/meta
-            
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
