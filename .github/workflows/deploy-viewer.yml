@@ -89,6 +89,46 @@ jobs:
           mkdir -p bin
           dart compile exe bin/markdown_metadata_cli.dart -o bin/markdown_metadata_cli
 
+
+      - name: Generate asset directories list for pubspec.yaml
+        id: asset-dirs
+        run: |
+          # Find all year/month directories in articles folder
+          ASSET_DIRS=$(find articles -type d -regex "articles/[0-9]\{4\}/[0-9]\{2\}" | sed 's/^articles/assets/' | sort | uniq)
+          
+          # Format the directories for pubspec.yaml
+          FORMATTED_DIRS=""
+          for dir in $ASSET_DIRS; do
+            FORMATTED_DIRS="${FORMATTED_DIRS}    - $dir\n"
+          done
+          
+          echo "Generated asset directories:"
+          echo -e "$FORMATTED_DIRS"
+          
+          # Save to a temporary file
+          echo -e "$FORMATTED_DIRS" > /tmp/asset_dirs.txt
+      
+      - name: Update pubspec.yaml with asset directories
+        run: |
+          cd ${{ env.APP_PATH }}
+          
+          # Create backup of original pubspec.yaml
+          cp pubspec.yaml pubspec.yaml.bak
+          
+          # Find the assets section and add our directories
+          awk '
+          /^flutter:/ {in_flutter=1}
+          /^  assets:/ {if(in_flutter==1) {in_assets=1; print; while(getline < "/tmp/asset_dirs.txt") {print $0}; next}}
+          {print}
+          ' pubspec.yaml.bak > pubspec.yaml
+          
+          # Show the changes
+          echo "Updated pubspec.yaml assets section:"
+          grep -A 20 "assets:" pubspec.yaml
+          
+          # Run flutter pub get again to update dependencies with new assets
+          flutter pub get
+
       - name: Build web
         run: |
           cd ${{ env.APP_PATH }}
