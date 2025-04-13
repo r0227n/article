@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:article_viewer/data/services/article_service.dart';
-import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../domain/models/markdown_cotent.dart';
@@ -84,8 +83,8 @@ class _ShareActionMenuState extends State<ShareActionMenu> {
   }
 
   // X（Twitter）の投稿画面のURL
-  Future<void> _shareToX({required String title, required String url}) async {
-    final tweetText = Uri.encodeComponent("$title\n$url");
+  Future<void> _shareToX({required String title}) async {
+    final tweetText = Uri.encodeComponent("$title\n${Uri.base.path}");
     final uri = Uri.parse('https://twitter.com/intent/tweet?text=$tweetText');
 
     if (await canLaunchUrl(uri)) {
@@ -103,9 +102,7 @@ class _ShareActionMenuState extends State<ShareActionMenu> {
       menuChildren: <Widget>[
         MenuItemButton(
           onPressed: () async {
-            final url = Uri.decodeComponent(
-              GoRouter.of(context).state.uri.path,
-            );
+            final url = Uri.base.path;
             // TODO: デプロイ後、ちゃんとホスト部分もコピーされているか確認する
             await Clipboard.setData(ClipboardData(text: url));
 
@@ -127,11 +124,8 @@ class _ShareActionMenuState extends State<ShareActionMenu> {
         ),
         MenuItemButton(
           onPressed: () async {
-            final url = Uri.decodeComponent(
-              GoRouter.of(context).state.uri.path,
-            );
             try {
-              await _shareToX(title: widget.title, url: url);
+              await _shareToX(title: widget.title);
             } catch (e) {
               if (!context.mounted) {
                 return;
