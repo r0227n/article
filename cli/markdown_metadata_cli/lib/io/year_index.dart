@@ -56,7 +56,8 @@ class YearIndex extends IndexIo with IndexIoMixin {
       groupedByYear.entries.map((entry) async {
         final year = entry.key;
         final articlesForYear = entry.value;
-        final jsonFile = File(p.join(path, '$year.json'));
+        final fileName = '$year.json';
+        final jsonFile = File(p.join(path, fileName));
 
         if (await jsonFile.exists()) {
           // 既存のファイルを更新
@@ -72,7 +73,7 @@ class YearIndex extends IndexIo with IndexIoMixin {
             year: year,
             month: articlesForYear.first.month,
             count: articlesForYear.length,
-            path: jsonFile.path,
+            path: fileName,
             lastUpdated: DateTime.now().toUtc(),
           ),
         );
