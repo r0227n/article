@@ -88,7 +88,7 @@ class _ShareActionMenuState extends State<ShareActionMenu> {
 
   // X（Twitter）の投稿画面のURL
   Future<void> _shareToX({required String title}) async {
-    final tweetText = Uri.encodeComponent("$title\n${Uri.base.path}");
+    final tweetText = Uri.encodeComponent("$title\n$url");
     final uri = Uri.parse('https://twitter.com/intent/tweet?text=$tweetText');
 
     if (await canLaunchUrl(uri)) {
@@ -99,6 +99,8 @@ class _ShareActionMenuState extends State<ShareActionMenu> {
     }
   }
 
+  String get url => 'https://$_webDomain${Uri.base.path}';
+
   @override
   Widget build(BuildContext context) {
     return MenuAnchor(
@@ -106,7 +108,6 @@ class _ShareActionMenuState extends State<ShareActionMenu> {
       menuChildren: <Widget>[
         MenuItemButton(
           onPressed: () async {
-            final url = Uri.https(_webDomain, Uri.base.path).path;
             // TODO: デプロイ後、ちゃんとホスト部分もコピーされているか確認する
             await Clipboard.setData(ClipboardData(text: url));
 
@@ -115,7 +116,7 @@ class _ShareActionMenuState extends State<ShareActionMenu> {
             }
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('URLをコピーしました'),
+                content: Text('$_webDomain'),
                 behavior: SnackBarBehavior.floating,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
