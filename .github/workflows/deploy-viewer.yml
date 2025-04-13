@@ -1,18 +1,21 @@
 name: Deploy Flutter Web to GitHub Pages
 
 on:
-  push:
-    branches: [ main ]  # mainブランチにプッシュされたときに実行
   pull_request:
-    branches: [ main ]  # mainブランチへのPRで実行
+    branches: [ main ]
+    types: [ closed ]
+    paths:
+      - 'app/article_viewer/**'
+      - 'articles/**'
   workflow_dispatch:    # 手動実行も可能に
 
 env:
   APP_PATH: app/article_viewer
-  APP_NAME: article_viewer
 
 jobs:
   build-and-deploy:
+    # マージされたPRまたは手動実行時に実行
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     
     steps:
