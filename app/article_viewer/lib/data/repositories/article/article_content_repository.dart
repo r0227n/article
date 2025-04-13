@@ -14,7 +14,7 @@ ArticleContentRepository articleContentRepository(Ref ref) {
 class ArticleContentRepository {
   const ArticleContentRepository({
     this.assetsArticlesPath = const String.fromEnvironment(
-      'ASSET_BASE_PATH',
+      'ASSET_ARTICLES_PATH',
       defaultValue: 'assets/articles',
     ),
   });

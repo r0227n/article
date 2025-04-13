@@ -16,7 +16,7 @@ ArticleMetaRepository articleMetaRepository(Ref ref) {
 class ArticleMetaRepository {
   const ArticleMetaRepository({
     this.assetsMetaPath = const String.fromEnvironment(
-      'ASSET_BASE_PATH',
+      'ASSET_META_PATH',
       defaultValue: 'assets/meta',
     ),
   });
