@@ -64,7 +64,12 @@ jobs:
         id: changed-files
         run: |
           # Get list of added or modified markdown files in the articles/ directory
-          CHANGED_FILES=$(git diff --name-only --diff-filter=AM ${{ github.event.before }} ${{ github.sha }} | grep "^articles/.*\.md$" | tr '\n' ',' | sed 's/,$//' || echo "")
+          # Get all markdown files if workflow_dispatch, otherwise get changed files
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            CHANGED_FILES=$(find articles -name "*.md" | tr '\n' ',' | sed 's/,$//' || echo "")
+          else
+            CHANGED_FILES=$(git diff --name-only --diff-filter=AM ${{ github.event.before }} ${{ github.sha }} | grep "^articles/.*\.md$" | tr '\n' ',' | sed 's/,$//' || echo "")
+          fi
           echo "Changed markdown files: $CHANGED_FILES"
           
           # Format the list for CLI input
