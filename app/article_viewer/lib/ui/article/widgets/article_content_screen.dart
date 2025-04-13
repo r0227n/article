@@ -75,6 +75,10 @@ class ShareActionMenu extends StatefulWidget {
 
 class _ShareActionMenuState extends State<ShareActionMenu> {
   final FocusNode _buttonFocusNode = FocusNode(debugLabel: 'Menu Button');
+  final String _webDomain = const String.fromEnvironment(
+    'WEB_DOMAIN',
+    defaultValue: 'dummy.com',
+  );
 
   @override
   void dispose() {
@@ -102,7 +106,7 @@ class _ShareActionMenuState extends State<ShareActionMenu> {
       menuChildren: <Widget>[
         MenuItemButton(
           onPressed: () async {
-            final url = Uri.base.path;
+            final url = Uri.https(_webDomain, Uri.base.path).path;
             // TODO: デプロイ後、ちゃんとホスト部分もコピーされているか確認する
             await Clipboard.setData(ClipboardData(text: url));
 
