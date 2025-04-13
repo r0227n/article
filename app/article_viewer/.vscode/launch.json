@@ -7,19 +7,16 @@
         {
             "name": "article_viewer",
             "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "article_viewer (profile mode)",
-            "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "article_viewer (release mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
+            "args": [
+                "--wasm",
+                "-d",
+                "web-server",
+                "--web-port",
+                "8080",
+                "--web-hostname",
+                "localhost"
+            ]
         }
     ]
 }
