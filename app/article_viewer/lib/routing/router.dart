@@ -16,13 +16,8 @@ part 'router.g.dart';
 GoRouter router(Ref ref) {
   return GoRouter(
     routes: $appRoutes,
-    initialLocation: '/',
+    initialLocation: const ArticlesRoute().location,
     redirect: (context, state) {
-      // NOTE: ルートディレクトリを決めていないため、一旦/articlesにリダイレクト
-      if (state.uri.path == '/') {
-        return const ArticlesRoute().location;
-      }
-
       // pathに全角数字が含まれている場合、半角数字に変換
       if (state.uri.containsFullWidthDigits()) {
         return '/${state.uri.pathSegmentsFullWidthToHalfWidth().join('/')}';
@@ -38,7 +33,7 @@ GoRouter router(Ref ref) {
 }
 
 @TypedGoRoute<ArticlesRoute>(
-  path: '/articles',
+  path: '/',
   routes: <TypedGoRoute<GoRouteData>>[
     TypedGoRoute<ArticlesYearRoute>(
       path: ':year',
@@ -107,7 +102,11 @@ class ArticlesMonthRoute extends GoRouteData {
 }
 
 class MarkdownRoute extends GoRouteData {
-  const MarkdownRoute({required this.year, required this.month, required this.fileName});
+  const MarkdownRoute({
+    required this.year,
+    required this.month,
+    required this.fileName,
+  });
 
   final int year;
   final int month;
@@ -115,7 +114,8 @@ class MarkdownRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final path = '$year/${DateFormat('MM').format(DateTime(0, month))}/$fileName';
+    final path =
+        '$year/${DateFormat('MM').format(DateTime(0, month))}/$fileName';
 
     return ArticleContentScreen(path: path);
   }

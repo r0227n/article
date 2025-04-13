@@ -9,7 +9,7 @@ part of 'router.dart';
 List<RouteBase> get $appRoutes => [$articlesRoute, $notFoundRoute];
 
 RouteBase get $articlesRoute => GoRouteData.$route(
-  path: '/articles',
+  path: '/',
 
   factory: $ArticlesRouteExtension._fromState,
   routes: [
@@ -38,7 +38,7 @@ RouteBase get $articlesRoute => GoRouteData.$route(
 extension $ArticlesRouteExtension on ArticlesRoute {
   static ArticlesRoute _fromState(GoRouterState state) => const ArticlesRoute();
 
-  String get location => GoRouteData.$location('/articles');
+  String get location => GoRouteData.$location('/');
 
   void go(BuildContext context) => context.go(location);
 
@@ -54,9 +54,8 @@ extension $ArticlesYearRouteExtension on ArticlesYearRoute {
   static ArticlesYearRoute _fromState(GoRouterState state) =>
       ArticlesYearRoute(year: int.parse(state.pathParameters['year']!)!);
 
-  String get location => GoRouteData.$location(
-    '/articles/${Uri.encodeComponent(year.toString())}',
-  );
+  String get location =>
+      GoRouteData.$location('/${Uri.encodeComponent(year.toString())}');
 
   void go(BuildContext context) => context.go(location);
 
@@ -76,7 +75,7 @@ extension $ArticlesMonthRouteExtension on ArticlesMonthRoute {
       );
 
   String get location => GoRouteData.$location(
-    '/articles/${Uri.encodeComponent(year.toString())}/${Uri.encodeComponent(month.toString())}',
+    '/${Uri.encodeComponent(year.toString())}/${Uri.encodeComponent(month.toString())}',
   );
 
   void go(BuildContext context) => context.go(location);
@@ -97,7 +96,7 @@ extension $MarkdownRouteExtension on MarkdownRoute {
   );
 
   String get location => GoRouteData.$location(
-    '/articles/${Uri.encodeComponent(year.toString())}/${Uri.encodeComponent(month.toString())}/${Uri.encodeComponent(fileName)}',
+    '/${Uri.encodeComponent(year.toString())}/${Uri.encodeComponent(month.toString())}/${Uri.encodeComponent(fileName)}',
   );
 
   void go(BuildContext context) => context.go(location);
@@ -135,7 +134,7 @@ extension $NotFoundRouteExtension on NotFoundRoute {
 // RiverpodGenerator
 // **************************************************************************
 
-String _$routerHash() => r'3151770a0cfef084dc2e6838d939b5d373d8d907';
+String _$routerHash() => r'00fa61f640bc05ebdb8d02dcdfe7f2dbb82f7b76';
 
 /// See also [router].
 @ProviderFor(router)
