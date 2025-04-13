@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:article_models/article_models.dart';
 import 'package:article_viewer/domain/models/article.dart';
 
 part 'article_meta_repository.g.dart';
@@ -18,14 +19,15 @@ class ArticleMetaRepository {
   final String assetsMetaPath;
 
   Future<List<ArticleMeta>> getAll() async {
-    final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
+    final index = await rootBundle.loadString('$assetsMetaPath/index.json');
+    final indexFile = IndexFile.fromJson(json.decode(index));
+    final yearIndexPaths = indexFile.indexes.map((e) => e.path);
 
-    final metaFiles = manifest.listAssets().where((e) => e.startsWith(assetsMetaPath)).toList();
     return Future.wait(
-      metaFiles.map((path) async {
-        final jsonString = await rootBundle.loadString(path);
+      yearIndexPaths.map((path) async {
+        final jsonString = await rootBundle.loadString('$assetsMetaPath/$path');
         return ArticleMeta.fromJson(json.decode(jsonString));
-      }),
+      }).toList(),
     );
   }
 
