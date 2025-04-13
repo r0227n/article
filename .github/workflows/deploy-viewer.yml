@@ -99,7 +99,7 @@ jobs:
 
           flutter build web --release --wasm \
             --base-href /${{ github.event.repository.name }}/ \
-            --dart-define=ASSET_ARTICLE_PATH=${{ github.event.repository.name }}/assets/articles \
+            --dart-define=ASSET_ARTICLES_PATH=${{ github.event.repository.name }}/assets/articles \
             --dart-define=ASSET_META_PATH=${{ github.event.repository.name }}/assets/meta
 
       - name: Generate metadata for changed files
