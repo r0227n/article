@@ -18,7 +18,9 @@ class AssetLoaderHelper {
 
   /// ファイルをロードする汎用メソッド
   static Future<String> loadFile(String relativePath) async {
-    final response = await http.get(Uri.https(Uri.base.host, relativePath));
+    // 全角文字が含まれていても正常にリクエストできるようにエンコード
+    final encodedPath = Uri.encodeFull(relativePath);
+    final response = await http.get(Uri.https(Uri.base.host, encodedPath));
     if (response.statusCode == 200) {
       return response.body;
     }
