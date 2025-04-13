@@ -1,18 +1,17 @@
 # Markdown Metadata CLI
 
-Markdown記事のメタデータを抽出し、年別のJSONファイルとして保存するCLIツールです。
+このCLIツールは、Markdown記事のメタデータを抽出し、年ごとのJSONファイルとして保存します。
 
 ## 主な機能
 
 - Markdown記事からフロントマターを抽出
 - ファイルパスから年月日情報を抽出（`articles/YYYY/MM/YYYY-MM-DD_title.md`形式に対応）
-- 年別のJSONファイルを生成
-- インデックスファイルの生成
+- 年ごとのJSONファイルを生成
+- インデックスファイルを生成
 
 ## 使い方
 
 ### 基本的な使用方法
-
 ```bash
 dart bin/markdown_metadata_cli.dart --files path/to/article1.md path/to/article2.md --output assets/metadata
 ```
@@ -25,6 +24,23 @@ dart bin/markdown_metadata_cli.dart --files path/to/article1.md path/to/article2
 | `--output` | `-o` | メタデータJSONファイルの出力先ディレクトリ |
 
 ## 出力ファイル
+
+### `index.json`
+
+`index.json` ファイルは、すべての年別JSONファイルのメタデータを含むインデックスファイルです。このファイルには、各年のメタデータがリスト形式で格納されます。
+
+```json
+{
+  "indexes": [
+    {
+      "year": 2025,
+      "month": 1,
+      "count": 1,
+      "path": "2025.json"
+    }
+  ]
+}
+```
 
 ### 年別JSONファイル (`YYYY.json`)
 
