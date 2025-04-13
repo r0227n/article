@@ -8,24 +8,22 @@ import '../../services/asset_loader_helper.dart';
 
 part 'article_meta_repository.g.dart';
 
+const _assetsMetaPath = String.fromEnvironment(
+  'ASSET_META_PATH',
+  defaultValue: 'assets/meta',
+);
+
 @riverpod
 ArticleMetaRepository articleMetaRepository(Ref ref) {
   return ArticleMetaRepository();
 }
 
 class ArticleMetaRepository {
-  const ArticleMetaRepository({
-    this.assetsMetaPath = const String.fromEnvironment(
-      'ASSET_META_PATH',
-      defaultValue: 'assets/meta',
-    ),
-  });
-
-  final String assetsMetaPath;
+  const ArticleMetaRepository();
 
   Future<List<ArticleMeta>> getAll() async {
     final index = await AssetLoaderHelper.loadFile(
-      '$assetsMetaPath/index.json',
+      '$_assetsMetaPath/index.json',
     );
     final indexFile = IndexFile.fromJson(json.decode(index));
     final yearIndexPaths = indexFile.indexes.map((e) => e.path);
@@ -33,7 +31,7 @@ class ArticleMetaRepository {
     return Future.wait(
       yearIndexPaths.map((path) async {
         final jsonString = await AssetLoaderHelper.loadFile(
-          '$assetsMetaPath/$path',
+          '$_assetsMetaPath/$path',
         );
         return ArticleMeta.fromJson(json.decode(jsonString));
       }).toList(),
@@ -42,7 +40,7 @@ class ArticleMetaRepository {
 
   Future<ArticleMeta> getByYear({required int year}) async {
     try {
-      final filePath = '$assetsMetaPath/$year.json';
+      final filePath = '$_assetsMetaPath/$year.json';
       final content = await AssetLoaderHelper.loadFile(filePath);
       return ArticleMeta.fromJson(json.decode(content));
     } catch (e) {

@@ -6,20 +6,18 @@ import '../../services/asset_loader_helper.dart';
 
 part 'article_content_repository.g.dart';
 
+const _assetsArticlesPath = String.fromEnvironment(
+  'ASSET_ARTICLES_PATH',
+  defaultValue: 'assets/articles',
+);
+
 @riverpod
 ArticleContentRepository articleContentRepository(Ref ref) {
-  return ArticleContentRepository();
+  return const ArticleContentRepository();
 }
 
 class ArticleContentRepository {
-  const ArticleContentRepository({
-    this.assetsArticlesPath = const String.fromEnvironment(
-      'ASSET_ARTICLES_PATH',
-      defaultValue: 'assets/articles',
-    ),
-  });
-
-  final String assetsArticlesPath;
+  const ArticleContentRepository();
 
   Future<List<String>> getAll({required ArticleMeta meta}) async {
     final contentFiles = meta.articles.map((e) => e.filePath).toList();
@@ -38,7 +36,7 @@ class ArticleContentRepository {
     }
 
     final content = await AssetLoaderHelper.loadFile(
-      '$assetsArticlesPath/$path',
+      '$_assetsArticlesPath/$path',
     );
     return content;
   }
