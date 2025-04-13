@@ -58,6 +58,7 @@ jobs:
 
       - name: Build web
         run: |
+          cd ${{ env.APP_PATH }}
           flutter build web --release --wasm \
             --base-href /${{ github.event.repository.name }}
 
