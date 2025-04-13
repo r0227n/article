@@ -1,8 +1,4 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
-library;
-
 export 'src/article_parser_base.dart';
-
-// TODO: Export any libraries intended for clients of this package.
+export 'src/models/article_metadata.dart';
+export 'src/models/year_article.dart';
+export 'src/models/index_metadata.dart';
