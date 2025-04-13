@@ -2,8 +2,9 @@ name: Deploy Flutter Web to GitHub Pages
 
 on:
   pull_request:
-    branches: [ main ]
-    types: [ closed ]
+    branches: [ feature/deploy-viewer ]
+    types: [ opened, synchronize ]
+    # types: [ closed ]
     paths:
       - 'app/article_viewer/**'
       - 'articles/**'
@@ -84,14 +85,21 @@ jobs:
           mkdir -p bin
           dart compile exe bin/markdown_metadata_cli.dart -o bin/markdown_metadata_cli
 
+      # - name: Generate metadata for changed files
+      #   if: steps.changed-files.outputs.has_changes == 'true'
+      #   run: |
+      #     echo "Processing changed markdown files: ${{ steps.changed-files.outputs.files }}"
+      #     cli/markdown_metadata_cli/bin/markdown_metadata_cli \
+      #       --files ${{ steps.changed-files.outputs.files }} \
+      #       --output ${{ env.APP_PATH }}/lib/assets/meta/
+
+      
       - name: Generate metadata for changed files
-        if: steps.changed-files.outputs.has_changes == 'true'
         run: |
           echo "Processing changed markdown files: ${{ steps.changed-files.outputs.files }}"
           cli/markdown_metadata_cli/bin/markdown_metadata_cli \
             --files ${{ steps.changed-files.outputs.files }} \
             --output ${{ env.APP_PATH }}/lib/assets/meta/
-
       - name: Build web
         run: |
           cd ${{ env.APP_PATH }}
