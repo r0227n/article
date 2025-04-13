@@ -21,13 +21,13 @@ class ArticleMetaRepository {
   Future<List<ArticleMeta>> getAll() async {
     final index = await rootBundle.loadString('$assetsMetaPath/index.json');
     final indexFile = IndexFile.fromJson(json.decode(index));
-    final yearIndexPaths = indexFile.indexes.map((e) => e.path).toList();
+    final yearIndexPaths = indexFile.indexes.map((e) => e.path);
 
     return Future.wait(
       yearIndexPaths.map((path) async {
         final jsonString = await rootBundle.loadString('$assetsMetaPath/$path');
         return ArticleMeta.fromJson(json.decode(jsonString));
-      }),
+      }).toList(),
     );
   }
 
