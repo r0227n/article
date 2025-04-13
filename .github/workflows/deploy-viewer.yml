@@ -128,10 +128,14 @@ jobs:
         run: |
           cd ${{ env.APP_PATH }}
 
+          # GitHub Pagesのドメインを取得
+          PAGES_DOMAIN="${{ github.repository_owner }}.github.io"
+
           flutter build web --release --wasm \
             --base-href /${{ github.event.repository.name }}/ \
             --dart-define=ASSET_ARTICLES_PATH=${{ github.event.repository.name }}/assets/articles \
-            --dart-define=ASSET_META_PATH=${{ github.event.repository.name }}/assets/meta
+            --dart-define=ASSET_META_PATH=${{ github.event.repository.name }}/assets/meta \
+            --dart-define=WEB_DOMAIN=${PAGES_DOMAIN}
 
       - name: Generate metadata for changed files
         run: |
