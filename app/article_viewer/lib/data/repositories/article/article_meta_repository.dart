@@ -1,6 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,7 +15,10 @@ ArticleMetaRepository articleMetaRepository(Ref ref) {
 
 class ArticleMetaRepository {
   const ArticleMetaRepository({
-    this.assetsMetaPath = kReleaseMode ? 'assets/assets/meta' : 'assets/meta',
+    this.assetsMetaPath = const String.fromEnvironment(
+      'ASSET_BASE_PATH',
+      defaultValue: 'assets/meta',
+    ),
   });
 
   final String assetsMetaPath;
