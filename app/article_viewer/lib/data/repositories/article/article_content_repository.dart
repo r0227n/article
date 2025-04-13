@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/models/article.dart';
+import '../../services/asset_loader_helper.dart';
 
 part 'article_content_repository.g.dart';
 
@@ -26,7 +26,7 @@ class ArticleContentRepository {
 
     return Future.wait(
       contentFiles.map((e) async {
-        final content = await rootBundle.loadString(e);
+        final content = await AssetLoaderHelper.loadFile(e);
         return content;
       }),
     );
@@ -37,7 +37,9 @@ class ArticleContentRepository {
       throw ArgumentError('$path is not a markdown file');
     }
 
-    final content = await rootBundle.loadString('$assetsArticlesPath/$path');
+    final content = await AssetLoaderHelper.loadFile(
+      '$assetsArticlesPath/$path',
+    );
     return content;
   }
 }
