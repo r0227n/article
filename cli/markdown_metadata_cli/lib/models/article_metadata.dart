@@ -58,15 +58,26 @@ sealed class ArticleMetadata with _$ArticleMetadata {
     @JsonKey(includeToJson: false, defaultValue: true) required bool published,
   }) = _ArticleMetadata;
 
-  factory ArticleMetadata.fromJson(Map<String, dynamic> json) => _$ArticleMetadataFromJson(json);
+  factory ArticleMetadata.fromJson(Map<String, dynamic> json) =>
+      _$ArticleMetadataFromJson(json);
 
   factory ArticleMetadata.fromFilePath(String filePath) {
     final file = File(filePath);
     final metadata = file.readAsYamlSync();
     final date = file.parseDatePrefix();
 
+    // Convert the absolute file path to a relative path starting with 'articles/'
+    // by removing everything before 'article/', filtering out any '..' parts,
+    // and joining the remaining path segments
+    final normalizedArticlePath = filePath
+        .split('article/')
+        .last
+        .split('/')
+        .where((part) => part != '..')
+        .join('/');
+
     return ArticleMetadata(
-      filePath: filePath.split('article/').last,
+      filePath: normalizedArticlePath,
       year: date.year,
       month: date.month,
       day: date.day,

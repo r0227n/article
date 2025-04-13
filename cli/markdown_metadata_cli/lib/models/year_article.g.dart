@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'year_article_dto.dart';
+part of 'year_article.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_YearlyArticleDto _$YearlyArticleDtoFromJson(Map<String, dynamic> json) =>
-    _YearlyArticleDto(
+_YearlyArticle _$YearlyArticleFromJson(Map<String, dynamic> json) =>
+    _YearlyArticle(
       year: (json['year'] as num).toInt(),
       count: (json['count'] as num).toInt(),
       lastUpdated: DateTime.parse(json['lastUpdated'] as String),
@@ -17,7 +17,7 @@ _YearlyArticleDto _$YearlyArticleDtoFromJson(Map<String, dynamic> json) =>
               .toList(),
     );
 
-Map<String, dynamic> _$YearlyArticleDtoToJson(_YearlyArticleDto instance) =>
+Map<String, dynamic> _$YearlyArticleToJson(_YearlyArticle instance) =>
     <String, dynamic>{
       'year': instance.year,
       'count': instance.count,

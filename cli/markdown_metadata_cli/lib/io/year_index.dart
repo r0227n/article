@@ -4,11 +4,15 @@ import 'package:collection/collection.dart';
 import 'package:path/path.dart' as p;
 import '../models/article_metadata.dart';
 import '../io/index_io.dart';
-import '../models/year_article_dto.dart';
+import '../models/index_metadata.dart';
+import '../models/year_article.dart';
 
 class YearIndex extends IndexIo with IndexIoMixin {
   @override
-  Future<void> create({required List<ArticleMetadata> metadatas, required String path}) async {
+  Future<void> create({
+    required List<ArticleMetadata> metadatas,
+    required String path,
+  }) async {
     final year = metadatas.first.year;
     final file = File(path);
 
@@ -20,7 +24,7 @@ class YearIndex extends IndexIo with IndexIoMixin {
       await file.create(recursive: true);
     }
 
-    final newDto = YearlyArticleDto(
+    final newDto = YearlyArticle(
       year: year,
       count: metadatas.length,
       lastUpdated: DateTime.now().toUtc(),
@@ -32,20 +36,28 @@ class YearIndex extends IndexIo with IndexIoMixin {
   }
 
   @override
-  Future<void> save({required List<ArticleMetadata> metadatas, required String path}) async {
+  Future<void> save({
+    required List<ArticleMetadata> metadatas,
+    required String path,
+  }) async {
     final directory = Directory(path);
     if (!await directory.exists()) {
       await directory.create(recursive: true);
     }
 
     // 年ごとにグループ化
-    final groupedByYear = groupBy(metadatas, (ArticleMetadata metadata) => metadata.year);
+    final groupedByYear = groupBy(
+      metadatas,
+      (ArticleMetadata metadata) => metadata.year,
+    );
+    final List<IndexMetadata> indexMetadatas = [];
 
     await Future.wait(
       groupedByYear.entries.map((entry) async {
         final year = entry.key;
         final articlesForYear = entry.value;
-        final jsonFile = File(p.join(path, '$year.json'));
+        final fileName = '$year.json';
+        final jsonFile = File(p.join(path, fileName));
 
         if (await jsonFile.exists()) {
           // 既存のファイルを更新
@@ -54,12 +66,35 @@ class YearIndex extends IndexIo with IndexIoMixin {
           // 新規作成
           await create(metadatas: articlesForYear, path: jsonFile.path);
         }
+
+        // インデックスメタデータを追加
+        indexMetadatas.add(
+          IndexMetadata(
+            year: year,
+            month: articlesForYear.first.month,
+            count: articlesForYear.length,
+            path: fileName,
+          ),
+        );
       }),
     );
+
+    // index.jsonを作成/更新
+    final indexFile = File(p.join(path, 'index.json'));
+    final indexData = IndexFile(
+      indexes:
+          indexMetadatas..sort((a, b) => b.path.compareTo(a.path)), // 降順でソート
+    );
+
+    await indexFile.writeAsString(formatJson(indexData.toJson()), flush: true);
+    stdout.writeln('index.json を更新しました');
   }
 
   @override
-  Future<void> update({required List<ArticleMetadata> metadatas, required String path}) async {
+  Future<void> update({
+    required List<ArticleMetadata> metadatas,
+    required String path,
+  }) async {
     final year = metadatas.first.year;
     final file = File(path);
 
@@ -70,7 +105,7 @@ class YearIndex extends IndexIo with IndexIoMixin {
     }
 
     // 既存のファイルがある場合は、内容を読み込んで更新
-    final yearArticle = YearlyArticleDto.fromJson(
+    final yearArticle = YearlyArticle.fromJson(
       jsonDecode(await file.readAsString()) as Map<String, dynamic>,
     );
 
@@ -95,7 +130,7 @@ class YearIndex extends IndexIo with IndexIoMixin {
 
     final allArticles = [...articlesToKeep, ...metadatas];
 
-    final updatedDto = YearlyArticleDto(
+    final updatedDto = YearlyArticle(
       year: year,
       count: allArticles.length,
       lastUpdated: DateTime.now().toUtc(),
