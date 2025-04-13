@@ -74,7 +74,6 @@ class YearIndex extends IndexIo with IndexIoMixin {
             month: articlesForYear.first.month,
             count: articlesForYear.length,
             path: fileName,
-            lastUpdated: DateTime.now().toUtc(),
           ),
         );
       }),
@@ -83,7 +82,6 @@ class YearIndex extends IndexIo with IndexIoMixin {
     // index.jsonを作成/更新
     final indexFile = File(p.join(path, 'index.json'));
     final indexData = IndexFileDto(
-      lastUpdated: DateTime.now().toUtc(),
       indexes:
           indexMetadatas..sort((a, b) => b.path.compareTo(a.path)), // 降順でソート
     );

@@ -5,10 +5,8 @@ part 'index_metadata_dto.g.dart';
 
 @freezed
 sealed class IndexFileDto with _$IndexFileDto {
-  const factory IndexFileDto({
-    required DateTime lastUpdated,
-    required List<IndexMetadataDto> indexes,
-  }) = _IndexFile;
+  const factory IndexFileDto({required List<IndexMetadataDto> indexes}) =
+      _IndexFile;
 
   factory IndexFileDto.fromJson(Map<String, dynamic> json) =>
       _$IndexFileDtoFromJson(json);
@@ -21,7 +19,6 @@ sealed class IndexMetadataDto with _$IndexMetadataDto {
     required int month,
     required int count,
     required String path,
-    required DateTime lastUpdated,
   }) = _IndexMetadataDto;
 
   factory IndexMetadataDto.fromJson(Map<String, dynamic> json) =>
