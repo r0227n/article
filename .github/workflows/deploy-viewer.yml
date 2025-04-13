@@ -109,6 +109,12 @@ jobs:
             --files ${{ steps.changed-files.outputs.files }} \
             --output ${{ env.APP_PATH }}/build/web/assets/meta/
 
+      - name: Copy articles to build directory
+        run: |
+          echo "Copying articles directory to build/web/assets/"
+          cp -r articles ${{ env.APP_PATH }}/build/web/assets/
+          echo "Articles directory copied successfully"
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
