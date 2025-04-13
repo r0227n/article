@@ -19,7 +19,9 @@ class AssetLoaderHelper {
   /// ファイルをロードする汎用メソッド
   static Future<String> loadFile(String relativePath) async {
     final url = Uri.base.host + relativePath;
-    final response = await http.get(Uri.parse(url));
+    final response = await http.get(
+      Uri.parse('https://r0227n.github.io/article/assets/meta/index.json'),
+    );
     if (response.statusCode == 200) {
       return response.body;
     }
