@@ -59,6 +59,39 @@ jobs:
       # - name: Run tests (if any)
       #   run: flutter test || true  # テストがない場合でもエラーにならないようにする
 
+      - name: Get changed markdown files
+        id: changed-files
+        run: |
+          # Get list of added or modified markdown files in the articles/ directory
+          CHANGED_FILES=$(git diff --name-only --diff-filter=AM ${{ github.event.before }} ${{ github.sha }} | grep "^articles/.*\.md$" | tr '\n' ',' | sed 's/,$//' || echo "")
+          echo "Changed markdown files: $CHANGED_FILES"
+          
+          # Format the list for CLI input
+          if [ -n "$CHANGED_FILES" ]; then
+            # Create a comma-separated list of file paths
+            FORMATTED_FILES=$(echo "$CHANGED_FILES" | tr '\n' ',' | sed 's/,$//')
+            echo "files=$FORMATTED_FILES" >> $GITHUB_OUTPUT
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "No markdown files changed"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build markdown_metadata_cli
+        run: |
+          cd cli/markdown_metadata_cli
+          dart pub get
+          mkdir -p bin
+          dart compile exe bin/markdown_metadata_cli.dart -o bin/markdown_metadata_cli
+
+      - name: Generate metadata for changed files
+        if: steps.changed-files.outputs.has_changes == 'true'
+        run: |
+          echo "Processing changed markdown files: ${{ steps.changed-files.outputs.files }}"
+          cli/markdown_metadata_cli/bin/markdown_metadata_cli \
+            --files ${{ steps.changed-files.outputs.files }} \
+            --output ${{ env.APP_PATH }}/lib/assets/meta/
+
       - name: Build web
         run: |
           cd ${{ env.APP_PATH }}
