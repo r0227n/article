@@ -2,21 +2,25 @@ name: Deploy Flutter Web to GitHub Pages
 
 on:
   pull_request:
-    branches: [ feature/deploy-viewer ]
-    types: [ opened, synchronize ]
-    # types: [ closed ]
+    branches: [ develop ] # TODO: mainに変更する
+    types: [ closed ]
     paths:
       - 'app/article_viewer/**'
       - 'articles/**'
-  workflow_dispatch:    # 手動実行も可能に
+  workflow_dispatch:    # オーナーのみ手動実行可能
+    inputs:
+      reason:
+        description: 'Reason for manual deployment'
+        required: true
+        default: 'Manual deployment'
 
 env:
   APP_PATH: app/article_viewer
 
 jobs:
   build-and-deploy:
-    # マージされたPRまたは手動実行時に実行
-    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
+    # マージされたPRまたはオーナーによる手動実行時に実行
+    if: github.event.pull_request.merged == true || (github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner)
     runs-on: ubuntu-latest
     
     steps:
@@ -84,14 +88,6 @@ jobs:
           dart pub get
           mkdir -p bin
           dart compile exe bin/markdown_metadata_cli.dart -o bin/markdown_metadata_cli
-
-      # - name: Generate metadata for changed files
-      #   if: steps.changed-files.outputs.has_changes == 'true'
-      #   run: |
-      #     echo "Processing changed markdown files: ${{ steps.changed-files.outputs.files }}"
-      #     cli/markdown_metadata_cli/bin/markdown_metadata_cli \
-      #       --files ${{ steps.changed-files.outputs.files }} \
-      #       --output ${{ env.APP_PATH }}/lib/assets/meta/
 
       - name: Build web
         run: |
