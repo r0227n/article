@@ -51,11 +51,6 @@ jobs:
       - name: Flutter version
         run: flutter --version
 
-      - name: Get dependencies
-        run: |
-          cd ${{ env.APP_PATH }}
-          flutter pub get
-
       # TODO: analyzeの問題を解決する
       # - name: Analyze project
       #   run: flutter analyze --no-fatal-infos
@@ -126,7 +121,7 @@ jobs:
           echo "Updated pubspec.yaml assets section:"
           grep -A 20 "assets:" pubspec.yaml
           
-          # Run flutter pub get again to update dependencies with new assets
+          # Run flutter pub get to update dependencies with new assets
           flutter pub get
 
       - name: Build web
