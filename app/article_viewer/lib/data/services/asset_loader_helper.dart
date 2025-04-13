@@ -20,16 +20,10 @@ class AssetLoaderHelper {
   static Future<String> loadFile(String relativePath) async {
     if (kIsWeb && !Uri.base.host.contains('localhost')) {
       // Webの場合、まずHTTPでロードを試みる
-      try {
-        final url = baseWebPath + relativePath;
-        final response = await http.get(Uri.parse(url));
-        print('response: ${response.statusCode}');
-        if (response.statusCode == 200) {
-          return response.body;
-        }
-      } catch (e) {
-        print('HTTP load failed: $e');
-        // エラー時はassetからのロードを試みる
+      final url = Uri.base.host + baseWebPath + relativePath;
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        return response.body;
       }
     }
 
